@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 3,
+  "contractId": "prt-realtime-render-v3",
+  "renderer": "PBR",
+  "scene": {
+    "room": {
+      "interiorMinimum": [-9.9, 0.1, -9.9],
+      "interiorMaximum": [9.9, 9.9, 9.9],
+      "albedo": {
+        "positiveZ": [0.5, 0.0, 0.0],
+        "negativeZ": [0.0, 0.5, 0.0],
+        "positiveX": [0.0, 0.0, 0.5],
+        "otherFaces": [0.5, 0.5, 0.5]
+      }
+    },
+    "cubes": {
+      "centers": [
+        [7.0, 1.0, 6.0],
+        [7.0, 1.0, 0.0],
+        [7.0, 1.0, -6.0],
+        [-7.0, 1.0, 6.0],
+        [-7.0, 1.0, 0.0],
+        [-7.0, 1.0, -6.0]
+      ],
+      "halfExtent": [1.0, 1.0, 1.0],
+      "albedo": [0.5, 0.5, 0.5]
+    }
+  },
+  "material": {
+    "metallic": 0.0,
+    "roughness": 1.0,
+    "ior": 1.5,
+    "ao": 1.0
+  },
+  "camera": {
+    "projection": "perspective",
+    "width": 800,
+    "height": 600,
+    "viewport": [0, 0, 800, 600],
+    "ssaaRasterViewport": [0, 0, 1600, 1200],
+    "verticalFovDegrees": 45.0,
+    "nearPlane": 0.1,
+    "farPlane": 100.0
+  },
+  "light": {
+    "type": "point",
+    "defaultIntensity": [150.0, 150.0, 150.0],
+    "intensitySource": "test-case.light.intensity",
+    "intensityRange": {
+      "minimum": [0.0, 0.0, 0.0],
+      "maximum": [500.0, 500.0, 500.0]
+    },
+    "interactiveStep": [10.0, 10.0, 10.0],
+    "falloff": "inverse-square"
+  },
+  "lighting": {
+    "directShadow": true,
+    "probeShadow": true,
+    "prtBands": 3,
+    "dynamic": false,
+    "indirectBounces": 1
+  },
+  "antialiasing": {
+    "method": "deterministic-2x2-ssaa",
+    "subpixelPattern": [[0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]],
+    "resolveSpace": "linear-hdr-before-tone-map"
+  },
+  "output": {
+    "realtime": {
+      "path": "cases/<case-id>/realtime.png",
+      "format": "RGB8 PNG",
+      "displayTransform": "Reinhard then exact sRGB",
+      "includeVisualizationOverlay": false
+    },
+    "indirect": {
+      "path": "cases/<case-id>/indirect-linear.pfm",
+      "format": "RGB32F little-endian PFM",
+      "colorSpace": "linear-hdr"
+    },
+    "state": {
+      "path": "cases/<case-id>/state.json"
+    }
+  }
+}

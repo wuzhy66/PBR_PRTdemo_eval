@@ -1,0 +1,4 @@
+# test_by_code.py 已验证的 deterministic Python dependency lock
+flip-evaluator==1.7
+numpy==2.5.2
+Pillow==12.3.0

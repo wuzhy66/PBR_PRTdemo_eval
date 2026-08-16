@@ -1,0 +1,21 @@
+{
+  "renderer": "CPU path tracer",
+  "referenceMode": "prt-diffuse-one-bounce",
+  "scene": "PRTdemo PBR",
+  "width": 800,
+  "height": 600,
+  "samplesPerPixel": 4096,
+  "antialiasing": { "method": "deterministic-2x2-ssaa", "subpixelPattern": [[0.25,0.25],[0.75,0.25],[0.25,0.75],[0.75,0.75]], "resolveSpace": "linear-hdr-before-tone-map", "sampleBudget": "total-per-output-pixel-evenly-split" },
+  "maxBounces": 2,
+  "indirectBounces": 1,
+  "seed": 20260812,
+  "material": { "metallic": 0.0000, "roughness": 1.0000, "ior": 1.5000, "ao": 1.0000 },
+  "lightIntensity": [80.0000, 80.0000, 80.0000],
+  "indirectReceiver": "fresnelSchlickRoughness kD * albedo / PI",
+  "indirectSampler": "cosine hemisphere",
+  "sampleSequence": "pixel-scrambled randomized low-discrepancy bases 2,3",
+  "displayTransform": "Reinhard then sRGB",
+  "snapshots": [
+    { "name": "offline", "cameraPosition": [-8.0000, 5.5000, -8.0000], "cameraTarget": [-7.3095, 5.7158, -7.3095], "verticalFovDegrees": 45.0000, "lightPosition": [7.5000, 6.0000, 0.0000], "lightIntensity": [80.0000, 80.0000, 80.0000] }
+  ]
+}

@@ -1,0 +1,4 @@
+[submodule "PBR_PRTdemo"]
+	path = PBR_PRTdemo
+	url = git@github.com:wuzhy66/PBR_PRTdemo.git
+	branch = master

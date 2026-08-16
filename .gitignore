@@ -1,0 +1,66 @@
+# Build outputs
+**/build/
+**/build-*/
+**/bin/
+**/out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Visual Studio
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+__pycache__/
+*.py[cod]
+
+# Repository-specific scratch files
+/Phong_PRTdemo/
+
+# Local staging for the external code-evaluation container. The trusted script is
+# versioned, but candidate snapshots, hidden test files, and generated results are not.
+/workspace/
+/test_files/
+/eval/
+
+# Evaluation runs remain local; the official 4096 SPP Offline reference is versioned.
+/test-results/*
+!/test-results/references/
+/test-results/references/*
+!/test-results/references/official-4096-v3/
+/test-results/references/official-4096-v3/*
+!/test-results/references/official-4096-v3/cases/
+!/test-results/references/official-4096-v3/cases/*/
+!/test-results/references/official-4096-v4/
+/test-results/references/official-4096-v4/*
+!/test-results/references/official-4096-v4/cases/
+!/test-results/references/official-4096-v4/cases/*/
+
+# These large AOVs are not consumed by the evaluator and can be reconstructed from a new render.
+/test-results/references/official-4096-v3/cases/*/offline-linear.pfm
+/test-results/references/official-4096-v3/cases/*/offline-direct-linear.pfm
+/test-results/references/official-4096-v4/cases/*/offline-linear.pfm
+/test-results/references/official-4096-v4/cases/*/offline-direct-linear.pfm

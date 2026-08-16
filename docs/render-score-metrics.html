@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRTdemo 渲染评分指标说明</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#f5f7fa; --panel:#fff; --text:#18202b; --muted:#5d6878; --line:#d8dee8; --accent:#087f6f; --hot:#f4a340; --code:#eef2f6; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#11151b; --panel:#1a2029; --text:#edf2f7; --muted:#aeb8c6; --line:#35404f; --accent:#58cdbd; --hot:#ffc066; --code:#242c37; } }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif; }
+    main { width:min(1180px,calc(100% - 32px)); margin:32px auto 72px; }
+    h1 { margin:0 0 8px; font-size:clamp(28px,4vw,42px); line-height:1.2; }
+    h2 { margin:42px 0 14px; font-size:26px; }
+    h3 { margin:0 0 8px; font-size:21px; }
+    p { margin:8px 0 14px; }
+    .lead { color:var(--muted); max-width:900px; font-size:18px; }
+    .metric { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px; margin:20px 0; }
+    .formula { overflow:auto; background:var(--code); border-radius:8px; padding:12px 15px; font:15px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:nowrap; }
+    .triptych { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0; }
+    figure { margin:0; min-width:0; }
+    figcaption { margin-top:7px; color:var(--muted); text-align:center; }
+    svg { display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:8px; background:#15191f; }
+    table { width:100%; border-collapse:collapse; margin:14px 0; }
+    th,td { padding:9px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-weight:600; }
+    td.num { text-align:right; font-variant-numeric:tabular-nums; }
+    code { background:var(--code); border-radius:4px; padding:2px 5px; }
+    .note { border-left:4px solid var(--accent); padding:8px 14px; background:color-mix(in srgb,var(--accent) 9%,transparent); }
+    .legend { display:flex; align-items:center; gap:9px; color:var(--muted); }
+    .ramp { width:180px; height:13px; border-radius:8px; background:linear-gradient(90deg,#000005,#381061,#ad2361,#f67e1e,#fff18d); }
+    .files { columns:2; }
+    @media (max-width:760px) { .triptych { grid-template-columns:1fr; } .files { columns:1; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>PRTdemo 渲染评分指标</h1>
+  <p class="lead">最终 case score 观察完整显示画面的感知差异与 linear HDR 间接光能量差异；Worst-patch FLIP 与被遮挡区域中的单向漏光作为 diagnostics。四个分数均归一化到 0～1，1 表示在对应指标下与 Offline reference 完全一致。</p>
+
+  <div class="note"><strong>统一输入约定：</strong>Offline 与 Realtime 均使用相同 camera、light、material、viewport 和 deterministic 2×2 SSAA。FLIP 与 Worst-patch FLIP 使用 tone-mapped display PNG；indirect transport 与 occlusion leak 使用未 tone mapping 的 indirect linear HDR PFM。error 图仅用于解释，不参与分数计算。</div>
+
+  <section class="metric">
+    <h3>1. perceptualFlip：人眼感知的整图差异</h3>
+    <p>FLIP 根据颜色、亮度、局部结构和观察条件估计人眼可见差异。项目使用 <code>67 pixels/degree</code>。每个像素的 FLIP error 位于 0～1，再对整张图取 mean。</p>
+    <div class="formula">perceptualFlip = 1 − mean(FLIP(Offline display, Realtime display, ppd=67))</div>
+    <div class="triptych">
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Offline combined 图示"><defs><linearGradient id="a" x2="1" y2="1"><stop stop-color="#12662b"/><stop offset="1" stop-color="#6b7471"/></linearGradient></defs><rect width="320" height="190" fill="url(#a)"/><path d="M0 122h320v68H0z" fill="#929995"/><path d="M20 93h72v70H20zM235 90h66v73h-66z" fill="#c7cbc7"/></svg><figcaption>Offline：完整 reference display</figcaption></figure>
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Realtime combined 图示"><defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="#12642b"/><stop offset="1" stop-color="#69736f"/></linearGradient></defs><rect width="320" height="190" fill="url(#b)"/><path d="M0 122h320v68H0z" fill="#8c9690"/><path d="M20 93h72v70H20zM235 90h66v73h-66z" fill="#bec5bf"/></svg><figcaption>Realtime：完整 candidate display</figcaption></figure>
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="FLIP error heatmap 图示"><defs><linearGradient id="m1" x2="1"><stop stop-color="#000005"/><stop offset=".5" stop-color="#54106e"/><stop offset="1" stop-color="#f48b24"/></linearGradient></defs><rect width="320" height="190" fill="#000005"/><path d="M0 115c70-18 133 21 210 1s83-8 110 9v28c-80-25-139 4-208-3S45 167 0 152z" fill="url(#m1)"/></svg><figcaption>Error：FLIP perceptual error map</figcaption></figure>
+    </div>
+    <p>它最接近“整体看起来像不像”。NVIDIA 建议必须压成单值时使用 mean，但局部严重 artifact 仍可能被大量正确 pixels 稀释，因此另外保留 Worst-patch FLIP diagnostic。</p>
+  </section>
+
+  <section class="metric">
+    <h3>1b. worstPatchFlip：局部严重感知误差（diagnosticOnly）</h3>
+    <p>把完整 FLIP error map 划分为 <code>32×32</code> pixel tiles，计算每个 tile 的 mean error，再取所有 tile means 的 p95。它强调成片的 shadow acne、moiré 和局部 aliasing，同时避免单 pixel max 对孤立噪点过度敏感。</p>
+    <div class="formula">Eworst = p95({ mean(FLIP error in each 32×32 tile) })<br>worstPatchFlip = 1 − Eworst</div>
+    <p>该值不进入 case total，但其 per-case improvement median 是正式 A/B regression gate 之一。它与 perceptualFlip 共用 <code>error-perceptual-flip.png</code>，无需第二次视觉误差计算。</p>
+  </section>
+
+  <section class="metric">
+    <h3>2. indirectTransport：间接光能量是否一致</h3>
+    <p>对 Offline indirect <em>R</em> 与 Realtime indirect <em>C</em> 的 linear RGB 全部通道计算 symmetric L1。分母使用双方能量之和，因此 Offline 偏亮和 Realtime 偏亮都会受到同等惩罚，并且整体 light intensity 线性缩放时分数基本不变。</p>
+    <div class="formula">Etransport = Σ|C − R| / Σ(C + R)<br>indirectTransport = 1 − Etransport</div>
+    <div class="triptych">
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Offline indirect 图示"><rect width="320" height="190" fill="#17251d"/><ellipse cx="160" cy="145" rx="145" ry="55" fill="#68766e"/><rect x="42" y="76" width="66" height="73" fill="#7a817c"/><rect x="220" y="72" width="63" height="77" fill="#737d77"/></svg><figcaption>Offline：indirect linear HDR 的显示变换</figcaption></figure>
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Realtime indirect 图示"><rect width="320" height="190" fill="#19281f"/><ellipse cx="160" cy="145" rx="145" ry="55" fill="#718078"/><rect x="42" y="76" width="66" height="73" fill="#838b86"/><rect x="220" y="72" width="63" height="77" fill="#7b8780"/></svg><figcaption>Realtime：indirect linear HDR 的显示变换</figcaption></figure>
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Transport error heatmap 图示"><rect width="320" height="190" fill="#000005"/><ellipse cx="160" cy="147" rx="142" ry="48" fill="#35105e" opacity=".8"/><path d="M34 145h82v19H34zm174-4h83v22h-83z" fill="#e95b1b"/></svg><figcaption>Error：每像素 |C−R|/(C+R)</figcaption></figure>
+    </div>
+    <p>这个指标直接检查 GI transport，而不会被 direct light、白色 light sphere 或 tone mapping 掩盖。两张图都全黑时定义为 1。</p>
+  </section>
+
+  <section class="metric">
+    <h3>3. occlusionLeak：被遮挡区域是否出现过量间接光（diagnosticOnly）</h3>
+    <p>Offline renderer 根据 2×2 SSAA 的四个 subpixel 生成 occlusion coverage mask <em>M</em>，权重为 0、¼、½、¾ 或 1。只在 mask 内比较 indirect luminance，并且只惩罚 <code>C &gt; R</code> 的过量能量；Realtime 更暗不属于 light leaking，由 indirectTransport 负责评价。</p>
+    <div class="formula">Eleak = Σ M·max(C − R, 0) / Σ M·max(C, R)<br>occlusionLeak = 1 − Eleak</div>
+    <div class="triptych">
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Offline occlusion mask 图示"><rect width="320" height="190" fill="#080a0d"/><path d="M0 135h82v12H0zm238 0h82v12h-82z" fill="#69726d"/><rect x="8" y="75" width="72" height="61" fill="#1e2226"/><rect x="240" y="75" width="72" height="61" fill="#1e2226"/></svg><figcaption>Offline：只显示 occlusion mask 内 reference</figcaption></figure>
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Realtime masked indirect 图示"><rect width="320" height="190" fill="#080a0d"/><path d="M0 135h82v12H0zm238 0h82v12h-82z" fill="#a3b0a8"/><rect x="8" y="75" width="72" height="61" fill="#1e2226"/><rect x="240" y="75" width="72" height="61" fill="#1e2226"/></svg><figcaption>Realtime：同一个 mask 内的 candidate</figcaption></figure>
+      <figure><svg viewBox="0 0 320 190" role="img" aria-label="Leak excess heatmap 图示"><rect width="320" height="190" fill="#000005"/><path d="M0 135h82v12H0zm238 0h82v12h-82z" fill="#fff18d"/></svg><figcaption>Error：M·max(C−R,0) 的相对强度</figcaption></figure>
+    </div>
+    <p>mask 为空表示该 camera/light 几何没有可观测的被遮挡 subpixel，此时分数定义为 1。该指标采用单向 excess error，可能奖励过暗结果，因此只用于定位问题，不参与 Strict score 或 Normalized improvement。</p>
+  </section>
+
+  <h2>case-0053 计算示例</h2>
+  <table>
+    <thead><tr><th>指标</th><th>Raw error</th><th>归一化分数</th><th>解释</th></tr></thead>
+    <tbody>
+      <tr><td>perceptualFlip</td><td class="num">mean FLIP = 0.0454851</td><td class="num">1 − 0.0454851 = 0.9545149</td><td>整图平均感知误差约 4.55%</td></tr>
+      <tr><td>worstPatchFlip</td><td class="num">tile p95 = 0.0870576</td><td class="num">1 − 0.0870576 = 0.9129424</td><td>475 个 tiles 中较差尾部的局部感知相似度</td></tr>
+      <tr><td>indirectTransport</td><td class="num">symmetric L1 = 0.0553546</td><td class="num">1 − 0.0553546 = 0.9446454</td><td>间接光线性能量差异约 5.54%</td></tr>
+      <tr><td>occlusionLeak</td><td class="num">excess ratio = 0.2194366</td><td class="num">1 − 0.2194366 = 0.7805634</td><td>15,664 个 masked pixels 内的单向过量间接光</td></tr>
+    </tbody>
+  </table>
+  <p>项目采用 weighted geometric mean：<code>total = FLIP^0.7 × Transport^0.3</code>，因此该示例的 <code>totalScore ≈ 0.9515433</code>。Worst-patch FLIP 与 occlusion leak 均不进入 total。</p>
+
+  <h2>跨 case Regression gates</h2>
+  <p>Candidate 先按所有 strict cases 计算原有 mean improvement；随后检查两个无阈值 majority gates。只有三项条件全部成立，ungated normalized improvement 才成为正式分数：</p>
+  <div class="formula">mean(totalB − totalA) &gt; 0<br>median(perceptualFlipB − perceptualFlipA) &gt; 0<br>median(worstPatchFlipB − worstPatchFlipA) &gt; 0</div>
+  <p>任一 median 不为正，说明至少一半 cases 没有在该感知维度上改善，decision 记为 <code>failed-regression</code>，正式 <code>normalizedImprovementScore=0</code>；原平均收益仍保存为 <code>ungatedNormalizedImprovementScore</code>，用于分析“少数大幅改善抵消多数退化”的情况。</p>
+
+  <h2>为什么 case-0037 / case-0038 的 Leak 只有 0.386864</h2>
+  <p>两条 case 的 camera/light position 相同，仅 light intensity 分别为 150 和 250。mask 只有 836 pixels，集中在屏幕左右两侧立方体与地面的狭窄遮挡带；这些 pixels 中 Realtime indirect 全部比 Offline reference 更亮。Offline masked luminance 约为 Realtime 的 38.686%，所以：</p>
+  <div class="formula">occlusionLeak = 1 − (Realtime − Offline) / Realtime = Offline / Realtime ≈ 0.386864</div>
+  <p>不同 light intensity 得到相同分数，说明误差随能量线性缩放，是稀疏 Probe interpolation 与低阶 SH 无法表达尖锐 visibility discontinuity 的系统性误差，而不是 4096 SPP reference noise。</p>
+
+  <h2>每条 case 生成的图</h2>
+  <div class="legend"><span>error 色标：</span><span class="ramp" aria-label="black zero error to yellow maximum relative error"></span><span>0 → 1</span></div>
+  <ul class="files">
+    <li>Reference case：<code>offline.png</code></li>
+    <li>Reference case：<code>offline-indirect.png</code></li>
+    <li>Reference case：<code>offline-occlusion-leak.png</code></li>
+    <li>Realtime case：<code>realtime.png</code></li>
+    <li>Realtime case：<code>realtime-indirect.png</code></li>
+    <li>Realtime case：<code>realtime-occlusion-leak.png</code></li>
+    <li>Realtime case：<code>error-perceptual-flip.png</code></li>
+    <li>Realtime case：<code>error-indirect-transport.png</code></li>
+    <li>Realtime case：<code>error-occlusion-leak.png</code></li>
+    <li>Realtime case：<code>metrics-explained.png</code></li>
+  </ul>
+  <p><code>score.json</code> 的 <code>metricImages</code> 字段记录这些文件属于 <code>reference-case</code> 还是 <code>realtime-case</code>，不保存绝对路径。</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 5,
+  "aggregation": "weighted-geometric-mean",
+  "weights": {
+    "perceptualFlip": 0.7,
+    "indirectTransport": 0.3,
+    "occlusionLeak": 0.0
+  },
+  "diagnosticMetrics": ["occlusionLeak", "worstPatchFlip"],
+  "regressionGates": {
+    "requirePositiveMedianPerceptualFlipDelta": true,
+    "requirePositiveMedianWorstPatchFlipDelta": true
+  },
+  "flip": {
+    "pixelsPerDegree": 67.0,
+    "worstPatch": {
+      "tileSize": 32,
+      "percentile": 0.95
+    }
+  },
+  "antialiasing": {
+    "method": "deterministic-2x2-ssaa",
+    "subpixelPattern": [[0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]],
+    "resolveSpace": "linear-hdr-before-tone-map",
+    "sampleBudget": "total-per-output-pixel-evenly-split"
+  }
+}
