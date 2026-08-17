@@ -90,24 +90,21 @@ LIBGL_ALWAYS_SOFTWARE=true GALLIUM_DRIVER=llvmpipe \
   cases.jsonl
   realtime-render-contract.json
   render-score-config.json
-  baseline_workspace/
-    CMakeLists.txt
-    realtime-render-contract.json
-    ...
+  baseline-score-report.json
   references/
+    reference-manifest.json
+    occlusion-mask-weights.f32
     cases/
       case-0001/
-        manifest.json
         offline.png
         offline-indirect-linear.pfm
-        offline-occlusion-mask.pgm
       ...
 ```
 
 三个固定 root 的权限要求：
 
 - `/workspace`：只需可读；保存 coding model rollout 后的完整 realtime 仓库。
-- `/test_files`：只需可读；保存隐藏 state、协议、baseline 和 offline references。
+- `/test_files`：只需可读；保存隐藏 state、协议、precomputed baseline 和 compact offline references。
 - `/eval`：必须可写；保存临时 source/build/capture 与最终 JSON。
 
 若平台尚未创建 mount point，可在挂载数据前创建：
@@ -117,26 +114,42 @@ sudo install -d -m 0755 /workspace /test_files
 sudo install -d -m 0775 -o "$(id -un)" -g "$(id -gn)" /eval
 ```
 
-也可以把 `references/` 的内容压缩为 `/test_files/references.zip`；ZIP 根目录必须
-直接包含 `cases/`，或只包含一个内部目录且该目录包含 `cases/`。脚本拒绝 absolute
-path、`..`、symbolic link 和超过 4 GiB 的解压 payload。
+当前 bundle 不使用压缩。Full-frame FLIP 继续读取 800×600 `offline.png`；Indirect
+和 Occlusion diagnostics 使用 200×150 linear data。`offline-indirect-linear.pfm`
+由原始 800×600 linear HDR AOV 做 deterministic 4×4 area-average，candidate capture
+在评分时执行完全相同的 downsample。`occlusion-mask-weights.f32` 以 case-major、
+little-endian float32 保存同样 area-average 后的 coverage weights。该布局保留全部
+200 cases，同时把 `/test_files` 控制在 500 files、500 MB 以内。
 
-推荐提供隐藏的 `baseline_workspace/`。脚本会在同一容器中分别构建 baseline A 与
-candidate B，并使用相同的 Xvfb、Mesa/llvmpipe、test set 和 reference 现场采集，
-从根本上避免跨 backend 比较。
-
-若评测平台对时长有严格限制，也可以不提供 `baseline_workspace/`，改为提供
+受文件数限制，compact bundle 不包含 `baseline_workspace/`，而是提供
 `baseline-score-report.json`。该报告必须由与评测容器完全相同的 OS image、
-Mesa/llvmpipe version、test set、4096 SPP reference 和评分协议生成；不得把
-Windows GPU baseline 与 Linux llvmpipe candidate 混合比较。
+Mesa/llvmpipe version、test set、4096 SPP reference 和 200×150 diagnostic protocol
+生成；不得把 Windows GPU baseline 与 Linux llvmpipe candidate 混合比较。Evaluator
+会校验 report 中声明的 diagnostic resolution，拒绝旧 800×600 score report。
+
+首次制作 compact bundle 时，不需要重新运行 4096 SPP path tracing。使用现有 full
+reference 与同 fingerprint 的 baseline capture：
+
+```powershell
+python .\tools\compact_test_files.py `
+  --source .\test_files-full `
+  --baseline-report .\test-results\runs\linux-llvmpipe-baseline\score-report.json `
+  --baseline-realtime .\test-results\runs\linux-llvmpipe-baseline\realtime `
+  --output .\test_files
+```
+
+转换工具会先验证 full-resolution baseline score，再生成 compact PFM、consolidated
+mask weights 和对应的新 baseline report，最后强制检查文件数与 byte size 上限。这里的
+baseline capture 必须在目标 Linux llvmpipe container 中生成；Windows `full-v4-baseline`
+即使 test-set fingerprint 相同也不能用于该命令。
 
 ## Build compatibility 与固定 runtime
 
-脚本把 candidate 和 baseline 分别复制到 `/eval/test_by_code_runtime/` 后构建，不会
-修改 `/workspace` 或 `/test_files`。在 POSIX 环境中，两次 build 都统一追加
+脚本把 candidate 复制到 `/eval/test_by_code_runtime/` 后构建，不会修改 `/workspace`
+或 `/test_files`。在 POSIX 环境中 build 统一追加
 `CXXFLAGS=-include unistd.h`，用于补齐以 Windows/VS2022 为主要开发目标的 snapshot
 可能遗漏的 POSIX declaration。该 compatibility layer 不修改 candidate source、shader、
-rendering algorithm 或评分数据，并且对 baseline/candidate 完全一致。
+rendering algorithm 或评分数据；precomputed baseline 在制作 bundle 时使用相同设置。
 
 Capture 阶段会清除外部 `PRT_*` environment variable，并固定：
 
@@ -148,8 +161,8 @@ Xvfb screen=1600x1200x24
 ```
 
 若正式平台可能分配不同 CPU 数量，应把 rollout 固定在不少于 8 个可用 CPU，确保
-`LP_NUM_THREADS` 始终为 8。candidate 和 baseline 在同一次 script execution 中依次
-capture，从而共享完全相同的 software-rendering backend。
+`LP_NUM_THREADS` 始终为 8。制作 baseline report 与运行 candidate evaluation 时必须
+冻结相同的 software-rendering backend。
 
 ## 执行完整评测
 
@@ -172,9 +185,9 @@ test -w /eval
 /eval/.venv/bin/python -m json.tool /eval/code_result.json
 ```
 
-一次完整 same-container 运行包含：candidate build 与 public CTest、200-case candidate
-capture、baseline build、200-case baseline capture、两组指标计算与 regression gates。
-运行期间没有逐 case stdout 属于正常行为。
+一次完整运行包含：candidate build 与 public CTest、200-case candidate capture、
+candidate 指标计算、与 precomputed baseline 的 regression gates。运行期间没有逐 case
+stdout 属于正常行为。
 
 ## 输出语义
 
@@ -200,7 +213,7 @@ capture、baseline build、200-case baseline capture、两组指标计算与 reg
 
 1. 使用相同 container image/digest 和 x86-64 architecture。
 2. 使用同一 `/test_files/cases.jsonl`、render contract、score config 和 references。
-3. `baseline_workspace` 内容完全一致，且不是跨 backend 预计算分数。
+3. `baseline-score-report.json` 来自相同 backend、相同 200×150 diagnostic protocol。
 4. `glxinfo -B` 均报告 llvmpipe，Mesa/LLVM version 相同。
 5. Xvfb screen、可用 CPU count 和 `LP_NUM_THREADS` 相同。
 6. Python packages 与 `requirements-test-by-code.txt` 一致。

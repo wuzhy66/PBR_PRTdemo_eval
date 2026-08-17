@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "caseCount": 200,
+  "samplesPerPixel": 4096,
+  "antialiasing": {
+    "method": "deterministic-2x2-ssaa",
+    "subpixelPattern": [
+      [
+        0.25,
+        0.25
+      ],
+      [
+        0.75,
+        0.25
+      ],
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.75,
+        0.75
+      ]
+    ],
+    "resolveSpace": "linear-hdr-before-tone-map",
+    "sampleBudget": "total-per-output-pixel-evenly-split"
+  },
+  "displayResolution": {
+    "width": 800,
+    "height": 600
+  },
+  "diagnosticResolution": {
+    "width": 200,
+    "height": 150,
+    "downsample": "linear-area-average"
+  },
+  "occlusionMaskWeights": {
+    "path": "occlusion-mask-weights.f32",
+    "format": "float32-little-endian-case-major"
+  }
+}

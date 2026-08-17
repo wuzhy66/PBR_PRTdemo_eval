@@ -1,0 +1,2626 @@
+{
+  "schemaVersion": 1,
+  "evaluatorSourceSha256": "2be579a5260102e4edefa9292e54963a0ac24a6cb42d8df8f6c26e989bfad4a0",
+  "baselineEnvironment": {
+    "os": "Ubuntu 24.04 x86-64",
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "mesa": "25.2.8",
+    "xvfbScreen": "1600x1200x24"
+  },
+  "diagnosticResolution": {
+    "width": 200,
+    "height": 150,
+    "downsample": "linear-area-average"
+  },
+  "weights": {
+    "perceptualFlip": 0.7,
+    "indirectTransport": 0.3,
+    "occlusionLeak": 0.0
+  },
+  "regressionGates": {
+    "requirePositiveMedianPerceptualFlipDelta": true,
+    "requirePositiveMedianWorstPatchFlipDelta": true
+  },
+  "cases": [
+    {
+      "id": "case-0001",
+      "definitionFingerprint": "f733e76581b065af08cc80e1ebcab0a9173aae6a1defa877aec2d67ed7f0e589",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5223332941532135,
+        "indirectTransport": 0.7702569580470204
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.05468661983613887
+      },
+      "totalScore": 0.5868864537934221
+    },
+    {
+      "id": "case-0002",
+      "definitionFingerprint": "ccec63489e980f0316469e9e018bae2dbb92101b9f28114526cdd644a343505e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5397631227970123,
+        "indirectTransport": 0.7702569657579504
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.07812699507921939
+      },
+      "totalScore": 0.6005275515980808
+    },
+    {
+      "id": "case-0003",
+      "definitionFingerprint": "4b01fbc0208b11c7a23d3f313e9f7f681fd5ce6626c604a24797b3f7963478b2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.48483264446258545,
+        "indirectTransport": 0.7862928607756166
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.06298832729225978
+      },
+      "totalScore": 0.5605180434678673
+    },
+    {
+      "id": "case-0004",
+      "definitionFingerprint": "b424bb00570f6be9dd181b7b72c2dfbedacd35b0434591240abba4e31ad51262",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.49397218227386475,
+        "indirectTransport": 0.7862928806187566
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.06645413733203898
+      },
+      "totalScore": 0.5678936961236983
+    },
+    {
+      "id": "case-0005",
+      "definitionFingerprint": "8a57eff170b17c2300c690410867263b6a0eef7a2d0a107777a629676ccdf713",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5149538218975067,
+        "indirectTransport": 0.7566462282073579
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.054128230916103415
+      },
+      "totalScore": 0.5779704855904867
+    },
+    {
+      "id": "case-0006",
+      "definitionFingerprint": "aeb673710a6e1601c7e37c4c270f1c1936d4e043b0ed6b24f10152ef05d45376",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5306124091148376,
+        "indirectTransport": 0.7566462649505619
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.07454198522173128
+      },
+      "totalScore": 0.5902174554250168
+    },
+    {
+      "id": "case-0007",
+      "definitionFingerprint": "da7833a0b4ca63e31c279e08ac7d48305c710b8a04265370a6d63d460ef5896d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5176703631877899,
+        "indirectTransport": 0.472857580369466
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.03903825944289563
+      },
+      "totalScore": 0.5037979757789003
+    },
+    {
+      "id": "case-0008",
+      "definitionFingerprint": "fcb7d96d16281ff10cf13d6042becc75c5d8598221adda7cbecf172297ee2922",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5387556254863739,
+        "indirectTransport": 0.472857571873581
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.042229889432201184
+      },
+      "totalScore": 0.5180758842137408
+    },
+    {
+      "id": "case-0009",
+      "definitionFingerprint": "4dfb3bc519361bdbafedd551d0800a029d8e2195687e01d10404f5c73ba1e724",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5434617400169373,
+        "indirectTransport": 0.47388679333877193
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.06550139499595387
+      },
+      "totalScore": 0.5215796806980273
+    },
+    {
+      "id": "case-0010",
+      "definitionFingerprint": "84610361bcedb7a7b328a7305077c37dae99136eb4814380feb39782647cf04b",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5647865235805511,
+        "indirectTransport": 0.473887038478928
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.09920857124379856
+      },
+      "totalScore": 0.5358231545661986
+    },
+    {
+      "id": "case-0011",
+      "definitionFingerprint": "2e03c9b5468ac857379c9e70f5f66282b777553265866f748c783e7bb4cb0b9e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5287683010101318,
+        "indirectTransport": 0.5052555092033332
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04703890440287073
+      },
+      "totalScore": 0.5216018290197968
+    },
+    {
+      "id": "case-0012",
+      "definitionFingerprint": "96118f330397df1cd5eaee7c270b2670862346b7e962be34e584c3f6699df21a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5539655089378357,
+        "indirectTransport": 0.5052556111770545
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.0831159048422706
+      },
+      "totalScore": 0.538878989912309
+    },
+    {
+      "id": "case-0013",
+      "definitionFingerprint": "1a059d91590194c961edee7a76d30c7187dbc8895ffbabe1480889c2227c14ea",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.948105476796627,
+        "indirectTransport": 0.9377305895492893
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8805207208372622
+      },
+      "totalScore": 0.9449810155176924
+    },
+    {
+      "id": "case-0014",
+      "definitionFingerprint": "04f8d2dc7f16b3036ad96fc64b9d3c7e754dc29bb45e9fc1e5f3df881988a22c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9438221305608749,
+        "indirectTransport": 0.9377305629328735
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8594307208553803
+      },
+      "totalScore": 0.9419905169409909
+    },
+    {
+      "id": "case-0015",
+      "definitionFingerprint": "fa37a845de12edf3cdf25c199d89aa67300d86ea90b68e0017b32a2863b89f61",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9552454352378845,
+        "indirectTransport": 0.9377305605060631
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8969668587243064
+      },
+      "totalScore": 0.949956898002962
+    },
+    {
+      "id": "case-0016",
+      "definitionFingerprint": "583cfa23d2c4824ef13da6774259f94dae11dd7bea84f76c27a50f0c0d972cac",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9568565711379051,
+        "indirectTransport": 0.9516146629422652
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9122409984054685
+      },
+      "totalScore": 0.955280974048351
+    },
+    {
+      "id": "case-0017",
+      "definitionFingerprint": "eba14e934c230ba2253d5369889e2a940256e86c31baaac4742b4569382506f5",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9538230746984482,
+        "indirectTransport": 0.9516146480169326
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9077006368406728
+      },
+      "totalScore": 0.9531600090958392
+    },
+    {
+      "id": "case-0018",
+      "definitionFingerprint": "c227ad3a3d39b25f1deaf5b2741ed57048e65eca3e5fa19b8c664426010e6558",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9625973030924797,
+        "indirectTransport": 0.9516146637536066
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.924542782629669
+      },
+      "totalScore": 0.9592892685285328
+    },
+    {
+      "id": "case-0019",
+      "definitionFingerprint": "341c04125b70f1c230b137a2cb5730d750650ef4b3fa646642525757deb9fa79",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.906906470656395,
+        "indirectTransport": 0.9046528722372897
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7208897208285636
+      },
+      "totalScore": 0.9062298022978619
+    },
+    {
+      "id": "case-0020",
+      "definitionFingerprint": "aeefdf2b9ec787ee15a97b27668cc50251635660874f087a09e3f5c5e4057c29",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9272013232111931,
+        "indirectTransport": 0.9046528866700575
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7815605556126685
+      },
+      "totalScore": 0.9203784086581835
+    },
+    {
+      "id": "case-0021",
+      "definitionFingerprint": "f51ffb43d0efcd148475070d00f13f1d97974a24331efc33ba5728fdd2543ab7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8783325552940369,
+        "indirectTransport": 0.86853347118666
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.4632594697419682
+      },
+      "totalScore": 0.8753812780141726
+    },
+    {
+      "id": "case-0022",
+      "definitionFingerprint": "e5a1a5e0bdf4acbf970665a1b58b3a747ba862156e1cf5d3605ce1a42421e728",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8919644728302956,
+        "indirectTransport": 0.8685334590959313
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5632578634530327
+      },
+      "totalScore": 0.8848695607947992
+    },
+    {
+      "id": "case-0023",
+      "definitionFingerprint": "ff2f905cc115c9741957494b35c9fd37eb7247447e8a910bebedd7ad7d9325e2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5241162180900574,
+        "indirectTransport": 0.7788279133137919
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04538409542292354
+      },
+      "totalScore": 0.5902442588476278
+    },
+    {
+      "id": "case-0024",
+      "definitionFingerprint": "1764fe34c929b81ee020e5d0159fd3c3f4d591b7e3fed87392a06f0c3c2f5cdf",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5646273195743561,
+        "indirectTransport": 0.7788280053989055
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.0833350245161758
+      },
+      "totalScore": 0.6218215790908694
+    },
+    {
+      "id": "case-0025",
+      "definitionFingerprint": "520f4ffb6c5b9e9e5ac6877d830e078caa39719a858bbce3c7d0d14823a08d5a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5316103398799896,
+        "indirectTransport": 0.8130601782765365
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.044910275563597724
+      },
+      "totalScore": 0.6038821614995769
+    },
+    {
+      "id": "case-0026",
+      "definitionFingerprint": "e9500326f45b258338f2aaf61c43920d8d78d0fd62e65eca8b8455387ebb0bb7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5699693560600281,
+        "indirectTransport": 0.8130602249005365
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.06597999522346087
+      },
+      "totalScore": 0.6340636691434103
+    },
+    {
+      "id": "case-0027",
+      "definitionFingerprint": "0ef9f0e279d321fe0c164302bab0706452b36c43b28bb3321e1e47d5d2cae342",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.846365824341774,
+        "indirectTransport": 0.8311668819985641
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.3192817874489269
+      },
+      "totalScore": 0.8417771876259637
+    },
+    {
+      "id": "case-0028",
+      "definitionFingerprint": "94cb72b9e7bfe0edab1b03317dff4c37e3d6624284430eb9d14c71549a88b505",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8538417667150497,
+        "indirectTransport": 0.8311669263577506
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.3893672830836298
+      },
+      "totalScore": 0.8469751190601374
+    },
+    {
+      "id": "case-0029",
+      "definitionFingerprint": "ae01c611b4923654153b6fe300b455258a7631af07b4b5421864baf413078220",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8559000492095947,
+        "indirectTransport": 0.810858031513963
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7532370957706008
+      },
+      "totalScore": 0.8421308606529939
+    },
+    {
+      "id": "case-0030",
+      "definitionFingerprint": "468c5a24582d3e0729cf1b1aed358fb9333820ca013ac9d93c9c1b62dfb0c52e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8787443712353706,
+        "indirectTransport": 0.810858021637703
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7897206597728655
+      },
+      "totalScore": 0.8578023556869662
+    },
+    {
+      "id": "case-0031",
+      "definitionFingerprint": "60709117f5c8de6bb640e1ae0ae1ce8551c4bdd02e29e501e34798f3412429d7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8670552521944046,
+        "indirectTransport": 0.8767606829908775
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.4939237236656485
+      },
+      "totalScore": 0.8699555462271574
+    },
+    {
+      "id": "case-0032",
+      "definitionFingerprint": "5d7d23ee81ee2d934f93d08ced232a6e45b64c2ae7dc13d7e41a35431e85773d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8805593773722649,
+        "indirectTransport": 0.8767607006537229
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5415227096402326
+      },
+      "totalScore": 0.8794180494771193
+    },
+    {
+      "id": "case-0033",
+      "definitionFingerprint": "d35f05aef109a2b0ea485e3bb091ce5903b5b7bcdc9f4c7443db85ebdb873c98",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9006813690066338,
+        "indirectTransport": 0.8864900279225768
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7152332192626396
+      },
+      "totalScore": 0.8964002765890058
+    },
+    {
+      "id": "case-0034",
+      "definitionFingerprint": "5cf3a5770e2ed2a8f1bc5ab1b4f5feb5f1e28a8e56ab06836fe6b49494c6a335",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8858052119612694,
+        "indirectTransport": 0.8864900282424638
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6778143597989887
+      },
+      "totalScore": 0.8860106012796425
+    },
+    {
+      "id": "case-0035",
+      "definitionFingerprint": "638b45fd7d28be592d164f3c7bb06d88dada2b870688058b98ed0094647eff6f",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9176300093531609,
+        "indirectTransport": 0.8864900477364132
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7636906136060138
+      },
+      "totalScore": 0.9081748792190641
+    },
+    {
+      "id": "case-0036",
+      "definitionFingerprint": "d90f2f83dd481d3ebc734059f5671a5ab375a7f030fdcd651b7b5432a76ad2c1",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9231828600168228,
+        "indirectTransport": 0.9345146640698461
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7116562362098193
+      },
+      "totalScore": 0.9265678970490427
+    },
+    {
+      "id": "case-0037",
+      "definitionFingerprint": "79aa1b2966899a3f4819be87ddd7fc7b222aa776f3c2fa70307833f8320a6cd6",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9178227260708809,
+        "indirectTransport": 0.9345146849183164
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6751589843508556
+      },
+      "totalScore": 0.9227987636090871
+    },
+    {
+      "id": "case-0038",
+      "definitionFingerprint": "34154fd8fea3de662a0c6eda39d38eb6c1eb16fa9311562667e04eaa490c24bd",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.930037185549736,
+        "indirectTransport": 0.9345146885895241
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7508702662911676
+      },
+      "totalScore": 0.9313781792193441
+    },
+    {
+      "id": "case-0039",
+      "definitionFingerprint": "ccf48e2e5fd4fddb84ffc703f077f3a951a60c641f86f2001c4da4eb5e434e24",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6824775338172913,
+        "indirectTransport": 0.8554947599997228
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.044199045031564355
+      },
+      "totalScore": 0.7303433140405521
+    },
+    {
+      "id": "case-0040",
+      "definitionFingerprint": "5622381d5b59df0823eb6fdf9a6e24ea3278b376c2af3f811fbc2d240cd519e2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7378565073013306,
+        "indirectTransport": 0.8554948002455193
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.17685198315302852
+      },
+      "totalScore": 0.7713394618331018
+    },
+    {
+      "id": "case-0041",
+      "definitionFingerprint": "905f6873d6f03f657cd3ad0fb135b17e2be4a486d5e55f07fd101f9cb3d0edb9",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6166099905967712,
+        "indirectTransport": 0.755189261564186
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.0773187346640043
+      },
+      "totalScore": 0.6552758036276456
+    },
+    {
+      "id": "case-0042",
+      "definitionFingerprint": "18a5899143158a1dea9a5f493e00902a68a418f61463ed0414cc8455cb79d675",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6889055967330933,
+        "indirectTransport": 0.7551892526591579
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.26397858208511027
+      },
+      "totalScore": 0.7081553480614471
+    },
+    {
+      "id": "case-0043",
+      "definitionFingerprint": "2a3893c223ecc209b841fe5215565294f3bf9db371dbccd9775fa1ede3632fff",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6680588126182556,
+        "indirectTransport": 0.7572778251400413
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.048747287580045096
+      },
+      "totalScore": 0.6936603330275747
+    },
+    {
+      "id": "case-0044",
+      "definitionFingerprint": "73e0f48e3320e1acb75b950ab5f023588d3a52858d5cd9556a68b6c8129747ec",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7062377333641052,
+        "indirectTransport": 0.7572778340700619
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.13751563564874236
+      },
+      "totalScore": 0.7211775782470611
+    },
+    {
+      "id": "case-0045",
+      "definitionFingerprint": "ead612bfe2c6323713e0eb33e8871fb665e52210ddc4c611054b22a1029a04a9",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9286873862147331,
+        "indirectTransport": 0.897735950759943
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7966396427975273
+      },
+      "totalScore": 0.9192915496071622
+    },
+    {
+      "id": "case-0046",
+      "definitionFingerprint": "b57a7d0713337a3edaa4067866e430bb98308675c0c9d96aa53ba65ccd6b9798",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9240245372056961,
+        "indirectTransport": 0.8977359634056539
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7784244511523871
+      },
+      "totalScore": 0.9160581434103703
+    },
+    {
+      "id": "case-0047",
+      "definitionFingerprint": "93f06d618339e317ba541550dcdfe86ebd25b73ede7cdb21bd9416cd4a0c86ff",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9371128976345062,
+        "indirectTransport": 0.8977359503249727
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.821897397936846
+      },
+      "totalScore": 0.9251218229264125
+    },
+    {
+      "id": "case-0048",
+      "definitionFingerprint": "bae7283f5271b81c302189f17f6f5c6197bc5e3373c87caa9fcb6c31871c83f2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9463252127170563,
+        "indirectTransport": 0.9028650774185135
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8927309265243821
+      },
+      "totalScore": 0.9330719722427285
+    },
+    {
+      "id": "case-0049",
+      "definitionFingerprint": "39d8ccb13862cb388f06c1d2038916e64655a6e5ad84d5822ec80c17588ed9f7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9453204646706581,
+        "indirectTransport": 0.9028650853930763
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8920143847848522
+      },
+      "totalScore": 0.9323783906017115
+    },
+    {
+      "id": "case-0050",
+      "definitionFingerprint": "a7a8c2d9c9fae33ef61b27ce670c8bc1a2384ded50947d228548d9927e100399",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9506119452416897,
+        "indirectTransport": 0.90286506008725
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9009683671814855
+      },
+      "totalScore": 0.9360286483413942
+    },
+    {
+      "id": "case-0051",
+      "definitionFingerprint": "4c148002f9e7b2f13e13210641f31129bd470c8326aa176b63e4de7720cd10ec",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9473294578492641,
+        "indirectTransport": 0.9438984101141082
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8943240574146331
+      },
+      "totalScore": 0.9462988360507693
+    },
+    {
+      "id": "case-0052",
+      "definitionFingerprint": "d170f0d17c052548c9366bafdaac80398a69f25a4189f130d22be44e7202b077",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.944496151059866,
+        "indirectTransport": 0.9438983926855258
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8836536432284146
+      },
+      "totalScore": 0.9443167838104577
+    },
+    {
+      "id": "case-0053",
+      "definitionFingerprint": "42a668f8b1ca2b295b66936a25d60be9b8ab1c6e53f712c5aa579da20a77114a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.953168697655201,
+        "indirectTransport": 0.9438983999963049
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9066360286948111
+      },
+      "totalScore": 0.9503780889577129
+    },
+    {
+      "id": "case-0054",
+      "definitionFingerprint": "afd14dc7942b6501b9af13ca2b749e8d0d6f19b549066d7540bc8e59c831c8df",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9531406126916409,
+        "indirectTransport": 0.9348470331983347
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9074782372030313
+      },
+      "totalScore": 0.9476152663028746
+    },
+    {
+      "id": "case-0055",
+      "definitionFingerprint": "38b4cb31efc50d6c5cf56ebe6afd880f57c86de58f031eefe53249b1d722804d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9483319744467735,
+        "indirectTransport": 0.9348470371662246
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.890484824795567
+      },
+      "totalScore": 0.9442661956073206
+    },
+    {
+      "id": "case-0056",
+      "definitionFingerprint": "14ef725329b69916a668003b493e20092e9e8f0b424e5a30b765a5317f62af30",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9601668938994408,
+        "indirectTransport": 0.9348470200598258
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9246253551904374
+      },
+      "totalScore": 0.952499757409584
+    },
+    {
+      "id": "case-0057",
+      "definitionFingerprint": "fe0b1bd2013371afce1fd511b3636bbdb4d4c06c7d4cd36966a6ce3280a0b98a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9511429816484451,
+        "indirectTransport": 0.9276877404296315
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9096339160718344
+      },
+      "totalScore": 0.9440448134117643
+    },
+    {
+      "id": "case-0058",
+      "definitionFingerprint": "a08ce6f2cfc254b2bcf775c94b557f582333b002024292423fbcfc4944f5cc57",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9487354531884193,
+        "indirectTransport": 0.927687743575804
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9048049903678476
+      },
+      "totalScore": 0.9423714854581177
+    },
+    {
+      "id": "case-0059",
+      "definitionFingerprint": "d04e3cede9048b7c72e65181c209b1e4914fe85081bdbb2c6b87cd974ad63558",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9564980566501617,
+        "indirectTransport": 0.9276877327574445
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9200279792753463
+      },
+      "totalScore": 0.9477622544800474
+    },
+    {
+      "id": "case-0060",
+      "definitionFingerprint": "2518ba0a6fe466c82165d6460af4c09efd028bbf581eae9e91f0d64735f78f67",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9117677882313728,
+        "indirectTransport": 0.874308105348535
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8583804038600648
+      },
+      "totalScore": 0.9003644165823169
+    },
+    {
+      "id": "case-0061",
+      "definitionFingerprint": "8b645ec168cfec0f087c89b6b381bdbabae84f84f8628d0c8348b84eade6f54d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9326026067137718,
+        "indirectTransport": 0.8743080881269604
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8918472975812619
+      },
+      "totalScore": 0.9147174966450625
+    },
+    {
+      "id": "case-0062",
+      "definitionFingerprint": "c74e30ef298e74c089b1077587d1483bc258799662eb93b0645f4ba07cb0eb5c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7837118059396744,
+        "indirectTransport": 0.5768983286353025
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.44976142135565167
+      },
+      "totalScore": 0.7148900567214963
+    },
+    {
+      "id": "case-0063",
+      "definitionFingerprint": "3ee0b4cad7f3ec8198ca55aaad38399f4374f9b780ea46c98c4354c4c3914db7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.85018390417099,
+        "indirectTransport": 0.5768983245280083
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5627400346435025
+      },
+      "totalScore": 0.7568133743718218
+    },
+    {
+      "id": "case-0064",
+      "definitionFingerprint": "1b0415a1cd40dfb2a92da82317f12915ff2d13dc98c6358329965dac47377574",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8554748892784119,
+        "indirectTransport": 0.8456848142264628
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7153073982568462
+      },
+      "totalScore": 0.852526025905213
+    },
+    {
+      "id": "case-0065",
+      "definitionFingerprint": "4371b51bf3a183d69c135b413f72f77729442e5cdef4b8aedec381b8be559bc8",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.890234112739563,
+        "indirectTransport": 0.8456848222410892
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7804850252796316
+      },
+      "totalScore": 0.876628373564356
+    },
+    {
+      "id": "case-0066",
+      "definitionFingerprint": "44712e6c37b31daaaf6a172d191dbaf1b9b51808a90050c5ee0c9eb5135959d1",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8637370467185974,
+        "indirectTransport": 0.8504526992399056
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7239932133597904
+      },
+      "totalScore": 0.8597301005319155
+    },
+    {
+      "id": "case-0067",
+      "definitionFingerprint": "f2c71ea2b76ff9132dcb3b01948603bbe402518aac0068dba9ceeeb0a02fc5be",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9019637629389763,
+        "indirectTransport": 0.8504526644717822
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.793845929062809
+      },
+      "totalScore": 0.886191146087913
+    },
+    {
+      "id": "case-0068",
+      "definitionFingerprint": "f9bd4f7dbbbd134d8a66500a4710ce2c177e19c3fb5e3fa2375115d011699acb",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8859043642878532,
+        "indirectTransport": 0.8583239515711245
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.84580870935024
+      },
+      "totalScore": 0.8775384577757575
+    },
+    {
+      "id": "case-0069",
+      "definitionFingerprint": "a533b0c68a7cceaad8132ff9edf39a5406d670dd66ea4568d7c90275c4d6d35f",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9118212014436722,
+        "indirectTransport": 0.858323932061958
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.880916310488135
+      },
+      "totalScore": 0.8954310435962929
+    },
+    {
+      "id": "case-0070",
+      "definitionFingerprint": "7c52f1aa56d2f4c5e75b541cf804535335023f522e19308ae809d4c09d906933",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9039527848362923,
+        "indirectTransport": 0.8908724320192154
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8415137162883184
+      },
+      "totalScore": 0.9000086405500621
+    },
+    {
+      "id": "case-0071",
+      "definitionFingerprint": "2969cd30c069eb25b6cd829c26002305f67334290f6addf81fdb28e6b9428e44",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.927115261554718,
+        "indirectTransport": 0.8908724329258999
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8815039691548009
+      },
+      "totalScore": 0.9160902633071422
+    },
+    {
+      "id": "case-0072",
+      "definitionFingerprint": "01993778dcfc9193e7fc0b68918aacda162cc532212e51e8d18fbb44a4fc64ab",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8821149840950966,
+        "indirectTransport": 0.8678624325450199
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7870398921866582
+      },
+      "totalScore": 0.87781481519059
+    },
+    {
+      "id": "case-0073",
+      "definitionFingerprint": "5a30dbd3ed1e3110b116a555c280716cca3c5816eccedc958686d46ff2006d7d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9128938913345337,
+        "indirectTransport": 0.8678624194015165
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8418733511687606
+      },
+      "totalScore": 0.8991444657107707
+    },
+    {
+      "id": "case-0074",
+      "definitionFingerprint": "30b0212bfc4eba89a7c40860c223123ee2edee99b92a9076a73684e4d61faac5",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8842466175556183,
+        "indirectTransport": 0.8658738823540285
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7328077971702442
+      },
+      "totalScore": 0.8786942350223984
+    },
+    {
+      "id": "case-0075",
+      "definitionFingerprint": "9c4f6025b984fce0f4cbf869981ba961978e7d81dd6d0f73334b9f1bd7d47593",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9146756753325462,
+        "indirectTransport": 0.865873846957964
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7981976244678664
+      },
+      "totalScore": 0.8997531535628149
+    },
+    {
+      "id": "case-0076",
+      "definitionFingerprint": "e719abaeffeaefded50b6c56a03d583e69a8a7389001f6a2d59d433b8f4de199",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.92727280408144,
+        "indirectTransport": 0.8565096025660299
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.830317164458029
+      },
+      "totalScore": 0.9054509666214163
+    },
+    {
+      "id": "case-0077",
+      "definitionFingerprint": "51a81bf413da48bb4f1a03c3496e8aba7f542f77295fccdc72d6eb06081214ba",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9551677890121937,
+        "indirectTransport": 0.8565096403581983
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8862654301482963
+      },
+      "totalScore": 0.924433008890819
+    },
+    {
+      "id": "case-0078",
+      "definitionFingerprint": "0c6cdcb1f9a7dcc409cc7cd1884b0d7c8f83a0cb42a1e597230b76779bb09b64",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9141234382987022,
+        "indirectTransport": 0.8750041105668062
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8171216536204158
+      },
+      "totalScore": 0.9022074710515673
+    },
+    {
+      "id": "case-0079",
+      "definitionFingerprint": "a8b58a61819582aac17561c2bf523331b8fe62626e399e0b13fb0e34a729d347",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9448135420680046,
+        "indirectTransport": 0.8750041219755351
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8566758952073998
+      },
+      "totalScore": 0.9233052526735922
+    },
+    {
+      "id": "case-0080",
+      "definitionFingerprint": "db2f00188408b239c6da4a7537bd64b08a8e3121845bee55218dd3676b2dc17d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8557760417461395,
+        "indirectTransport": 0.78053631079707
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.642955766793845
+      },
+      "totalScore": 0.83247273811673
+    },
+    {
+      "id": "case-0081",
+      "definitionFingerprint": "8f42b9e16fed1b6eb7513b0b4f7bf0dd47cbd597140799074d97cf40647e6b54",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8920899331569672,
+        "indirectTransport": 0.780536315274931
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7269321217157996
+      },
+      "totalScore": 0.8570457017082752
+    },
+    {
+      "id": "case-0082",
+      "definitionFingerprint": "b52d932d8740f3234416ad752c4624ec9a1d087d666312fe278a000690bc42d1",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8322187811136246,
+        "indirectTransport": 0.8434684567635056
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6599892452868519
+      },
+      "totalScore": 0.8355778377024558
+    },
+    {
+      "id": "case-0083",
+      "definitionFingerprint": "2bfa17de890abeee665bbeb887ba9a118d9b0dc65ae8f2a80c2024a25817ecfc",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8291030526161194,
+        "indirectTransport": 0.8434684533040877
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6738030756125232
+      },
+      "totalScore": 0.8333867918324007
+    },
+    {
+      "id": "case-0084",
+      "definitionFingerprint": "2b7e9909d943f98206e1e69640873628cfa9d89a47f95a24a079f8e556b1120c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.844293862581253,
+        "indirectTransport": 0.7964452715681231
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6811992562506931
+      },
+      "totalScore": 0.829645045618352
+    },
+    {
+      "id": "case-0085",
+      "definitionFingerprint": "9b07b425d9862641ac65c8d9fb7410d399e89a1e9fc5f397fe76bf6af999fa13",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8437631875276566,
+        "indirectTransport": 0.7964452971752606
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7447710469874439
+      },
+      "totalScore": 0.8292799918436319
+    },
+    {
+      "id": "case-0086",
+      "definitionFingerprint": "acb9d57f92f77a1c5baeeee31d8acd38f0b552d71d5b7ffb479d0453a3a129ad",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7200682163238525,
+        "indirectTransport": 0.8370875668581184
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.12996566251385977
+      },
+      "totalScore": 0.753343103052009
+    },
+    {
+      "id": "case-0087",
+      "definitionFingerprint": "113e1051eada0c948462051d8326f8901b95640b3ecbbd8f0880de884d06314b",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7412430942058563,
+        "indirectTransport": 0.8370875146405873
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.2017613764968702
+      },
+      "totalScore": 0.7687829119199037
+    },
+    {
+      "id": "case-0088",
+      "definitionFingerprint": "a4d3a08ebee3f13906b9551cb0ab8a86c8210907be39307939e9b34d8fe33cd0",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.712744951248169,
+        "indirectTransport": 0.7761585585462235
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.07279097658465616
+      },
+      "totalScore": 0.7312048106247766
+    },
+    {
+      "id": "case-0089",
+      "definitionFingerprint": "4033339686d12a717b6a6c50de5fe28529363485c1a76e31923e8acaa804491b",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7396089136600494,
+        "indirectTransport": 0.7761585473133374
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.14751505125896092
+      },
+      "totalScore": 0.7503892935010094
+    },
+    {
+      "id": "case-0090",
+      "definitionFingerprint": "f7740bdb0fd8c73802b226437eb9b7e38812d6be27857469590b73b8b2d2a99f",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5114596784114838,
+        "indirectTransport": 0.6746519334475559
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.05846419769804945
+      },
+      "totalScore": 0.5557659195827586
+    },
+    {
+      "id": "case-0091",
+      "definitionFingerprint": "a9867b899affcfb0e765019704b0aa45e38c5dd6d9d57451a5be4befde7c8bf2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5190495252609253,
+        "indirectTransport": 0.6746519898678038
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.06952657130314044
+      },
+      "totalScore": 0.5615262979817304
+    },
+    {
+      "id": "case-0092",
+      "definitionFingerprint": "a2fe595d5b727e168ad0b8563940430751d7af077e64910d0823c9ab990c34c9",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.4563090205192566,
+        "indirectTransport": 0.6488225647772601
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.043978634878294565
+      },
+      "totalScore": 0.5071297885545195
+    },
+    {
+      "id": "case-0093",
+      "definitionFingerprint": "e46f8dcb9e0ccab1afdefb10a121f0db6d6288bdb0641593e4f8f814cef159bb",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.49671244621276855,
+        "indirectTransport": 0.6488225438344006
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.047313972155097916
+      },
+      "totalScore": 0.53815986909665
+    },
+    {
+      "id": "case-0094",
+      "definitionFingerprint": "2c12154610b5d2ed4e87dbd558f3d7cfbb10a55a0b1715056ac952eb275cd0c0",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9428068138659,
+        "indirectTransport": 0.927522314375255
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8321856327740534
+      },
+      "totalScore": 0.9381952046486917
+    },
+    {
+      "id": "case-0095",
+      "definitionFingerprint": "e5845ff400f11a62018f495a3ec9ec3d1d0189465cea2d08089850477340c29f",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9391306973993778,
+        "indirectTransport": 0.9275223044060222
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8101979845698226
+      },
+      "totalScore": 0.935633006751746
+    },
+    {
+      "id": "case-0096",
+      "definitionFingerprint": "9ecb540dc26ac20a8e5b763a6f0519e4a9a8978894d46b0de14bed30f9066cdf",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9491336345672607,
+        "indirectTransport": 0.9275222988599445
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8596366159372337
+      },
+      "totalScore": 0.9425978883521015
+    },
+    {
+      "id": "case-0097",
+      "definitionFingerprint": "4f41a734e9b610f30d2004f360ee91d2b36642c8ee5b855c276a0d8b8bc79482",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9379248805344105,
+        "indirectTransport": 0.9405300475362007
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8993484785372857
+      },
+      "totalScore": 0.9387056720406782
+    },
+    {
+      "id": "case-0098",
+      "definitionFingerprint": "fd7f96762b79550616d0d851d30744bcdafcaea6a611f7ad8ca8bc5d2294953b",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9314898774027824,
+        "indirectTransport": 0.9405300376346019
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.887255955782166
+      },
+      "totalScore": 0.9341927636043708
+    },
+    {
+      "id": "case-0099",
+      "definitionFingerprint": "8b30cfe7d45370720e85b5aaab7bad0a6161d943b328695eb5e6badf0f661419",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9467049650847912,
+        "indirectTransport": 0.9405300453369883
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9122213982176618
+      },
+      "totalScore": 0.9448482444644332
+    },
+    {
+      "id": "case-0100",
+      "definitionFingerprint": "890a949550894128ba2fb7949c0f2e1227b476eb3e46bacde8e76f671b4228e2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.958214808255434,
+        "indirectTransport": 0.9635144443313012
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9135871095895709
+      },
+      "totalScore": 0.9598016310429831
+    },
+    {
+      "id": "case-0101",
+      "definitionFingerprint": "5086e17aa81e90e23f9e49c80d049ec7f1ef1fb89ab4e10abe8b44bdca17d780",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9534739963710308,
+        "indirectTransport": 0.9635144530395152
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9041456665181613
+      },
+      "totalScore": 0.9564750975042495
+    },
+    {
+      "id": "case-0102",
+      "definitionFingerprint": "1b2ccc3d69fc26089e22b9ce5aeb2743e4622581f8e7097165683f475e5407f2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9649379476904869,
+        "indirectTransport": 0.9635144589982247
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9267811299529057
+      },
+      "totalScore": 0.964510680403702
+    },
+    {
+      "id": "case-0103",
+      "definitionFingerprint": "a056118efe3d89ee190a7f8df744f3f244eca244bdebd3a7b88015289fc53a3e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9454697370529175,
+        "indirectTransport": 0.9413091174874373
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8921483251731843
+      },
+      "totalScore": 0.9442196239133814
+    },
+    {
+      "id": "case-0104",
+      "definitionFingerprint": "0b12ac69e908a9a9be87d455ad67894b2e8876967dd00490c098f602d265292a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9433425925672054,
+        "indirectTransport": 0.9413091146664831
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8853816225608171
+      },
+      "totalScore": 0.9427320883786927
+    },
+    {
+      "id": "case-0105",
+      "definitionFingerprint": "992ffd2301a510eb8236e5cd1d6561f27d38aa2b3aeb565ddc8eee825f12f93c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.950390063226223,
+        "indirectTransport": 0.9413090981699681
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9042518020793978
+      },
+      "totalScore": 0.9476566133659591
+    },
+    {
+      "id": "case-0106",
+      "definitionFingerprint": "b509f417c5886192ec8ec0c3868c872a7265f4ddacd02b25aed34c3f0603928e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9325149729847908,
+        "indirectTransport": 0.9355578372475026
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8960472084078447
+      },
+      "totalScore": 0.9334267916329236
+    },
+    {
+      "id": "case-0107",
+      "definitionFingerprint": "f9cec4a29f62d4dbe31c12069af73edd32817e5d6549db5c7f5aacff628ffc28",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9230680912733078,
+        "indirectTransport": 0.9355578425411215
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8803782768140082
+      },
+      "totalScore": 0.9267974070028195
+    },
+    {
+      "id": "case-0108",
+      "definitionFingerprint": "81fded78050a84e209eb12bc327e2f3b09c4799fb23ec54422a7949bb3b4f8ce",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9473207108676434,
+        "indirectTransport": 0.9355578229131867
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9135985950890244
+      },
+      "totalScore": 0.9437763993721036
+    },
+    {
+      "id": "case-0109",
+      "definitionFingerprint": "5f862b4a2c2a12e7a23bf22510ec78f11ad74a68e3437eb22363f1d67210f3d7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9542356356978416,
+        "indirectTransport": 0.9509249772641515
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8837862969859999
+      },
+      "totalScore": 0.9532412297491065
+    },
+    {
+      "id": "case-0110",
+      "definitionFingerprint": "9bb7e07f68e6fd7ac614cd0fbc4c612ab2e259b2f292348b5a0a54d3d4d91500",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9525517411530018,
+        "indirectTransport": 0.9509250061116953
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.872581574636206
+      },
+      "totalScore": 0.9520634286593821
+    },
+    {
+      "id": "case-0111",
+      "definitionFingerprint": "dc3ae69ae4b31fc805417c00171cf79c8afb0a5abf895f6fdcdeaaf44230c2ec",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9578385427594185,
+        "indirectTransport": 0.9509249863516416
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9011169901110407
+      },
+      "totalScore": 0.9557592146787288
+    },
+    {
+      "id": "case-0112",
+      "definitionFingerprint": "79f8d6ae1e0426973f9061e08aae5291457a72cfcca3be1b4322ac05fa17c39a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9063741937279701,
+        "indirectTransport": 0.8852006424723602
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8124073213009979
+      },
+      "totalScore": 0.8999694937218555
+    },
+    {
+      "id": "case-0113",
+      "definitionFingerprint": "0967b1cd13523d2dd07773bd93f20a7adf00eb1877dd6a0b93f73befb0168ecd",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9106034636497498,
+        "indirectTransport": 0.8852006579318914
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8150188649495249
+      },
+      "totalScore": 0.9029070144160393
+    },
+    {
+      "id": "case-0114",
+      "definitionFingerprint": "f97670d112a1dcc78b31984436e4efb8a821ed2349e6e0063e3a5eb20b1dc712",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9101971611380577,
+        "indirectTransport": 0.8931321021096934
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8326247477245489
+      },
+      "totalScore": 0.9050436873350355
+    },
+    {
+      "id": "case-0115",
+      "definitionFingerprint": "860283ee2ddd0753fca6d058820ff2e6db3393bb9b8e24508202aca152270a0c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9188614189624786,
+        "indirectTransport": 0.8931321105897908
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8458890449270257
+      },
+      "totalScore": 0.9110657552896363
+    },
+    {
+      "id": "case-0116",
+      "definitionFingerprint": "e3d093d461207101e641873678464faac51e739c9f9384f9c0b03a1a4c188f47",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.45594704151153564,
+        "indirectTransport": 0.714621275209524
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04298426739405836
+      },
+      "totalScore": 0.5217504879712436
+    },
+    {
+      "id": "case-0117",
+      "definitionFingerprint": "b009204dd4eafc1f8fbe1fd9ec4a825db7e8469ce868557cabe8fe664ed1a27e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.4895409941673279,
+        "indirectTransport": 0.7146212537130145
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.05112409295397813
+      },
+      "totalScore": 0.548371814241968
+    },
+    {
+      "id": "case-0118",
+      "definitionFingerprint": "f8f641a738ef0cccfa11cf91d673f12b26be3e7d1fb5e3074796cfba8b175ccb",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.3806609511375427,
+        "indirectTransport": 0.7736127729753499
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04224363522953356
+      },
+      "totalScore": 0.4709056697238241
+    },
+    {
+      "id": "case-0119",
+      "definitionFingerprint": "db1ba0b1e1960ebf9d5dfb517eca908c6113c346939adfbbe4276b94312a1d39",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.4310734272003174,
+        "indirectTransport": 0.7736127644517833
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.045721873536240465
+      },
+      "totalScore": 0.5137395070919966
+    },
+    {
+      "id": "case-0120",
+      "definitionFingerprint": "bf8eede54fa6dcc556455fadbabd60e599a80db1653dc662eb79c5a891e39b66",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.448513925075531,
+        "indirectTransport": 0.7473588029543177
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04199650379596276
+      },
+      "totalScore": 0.5227594569432075
+    },
+    {
+      "id": "case-0121",
+      "definitionFingerprint": "6886e590c73f21fa16fb76838d91f3b8a5e5d342b4608b1ea94a3dc977952827",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.492888867855072,
+        "indirectTransport": 0.7473588978713889
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.045276726869633466
+      },
+      "totalScore": 0.5584484238060762
+    },
+    {
+      "id": "case-0122",
+      "definitionFingerprint": "14aa98efa0c1a651fc57a0fa9c0439f323c87e7036c35e9610361669a79ba15f",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.48695844411849976,
+        "indirectTransport": 0.4702241589272491
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04008174982154744
+      },
+      "totalScore": 0.4818765721263227
+    },
+    {
+      "id": "case-0123",
+      "definitionFingerprint": "b3e7d5c6d3b03eb8d8882147b56215173b0fa629ab49766960565fe868e9c026",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5486065149307251,
+        "indirectTransport": 0.470224086106254
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.042656075855484255
+      },
+      "totalScore": 0.5238104204387758
+    },
+    {
+      "id": "case-0124",
+      "definitionFingerprint": "0e7e436d83a17cc5205589f16d4828a70e91e57ebfa9439109e4f33434aae269",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.50218465924263,
+        "indirectTransport": 0.4379766152262823
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.0469733580830507
+      },
+      "totalScore": 0.4819918403253175
+    },
+    {
+      "id": "case-0125",
+      "definitionFingerprint": "c1ad58dde2152e0f8a5c11fdaa9fc80405a5ce5112ff1c579add2c04cd0258db",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5856150686740875,
+        "indirectTransport": 0.43797660943385697
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.19082917390624077
+      },
+      "totalScore": 0.5367398560734677
+    },
+    {
+      "id": "case-0126",
+      "definitionFingerprint": "3b4afb93b8def76ae3947d87b0174f7e529b930d60cd03d318069a28dcfa3db7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.4916842579841614,
+        "indirectTransport": 0.4316391965377595
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04629732603789305
+      },
+      "totalScore": 0.4728426856595495
+    },
+    {
+      "id": "case-0127",
+      "definitionFingerprint": "a0d85543700a74bc740e56f49642d841d045a7673bf62f65b5e1027bde42d95c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5614010989665985,
+        "indirectTransport": 0.4316391735916083
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.13550685432273923
+      },
+      "totalScore": 0.5188329347096049
+    },
+    {
+      "id": "case-0128",
+      "definitionFingerprint": "5c556b234c3f51a5d84b852efe5f46065701d2dee3b9aaf72aa2db0a83af59a5",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9383774995803833,
+        "indirectTransport": 0.9312507330260555
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8813409262253117
+      },
+      "totalScore": 0.9362337617786977
+    },
+    {
+      "id": "case-0129",
+      "definitionFingerprint": "21a1dd8d49d98895ade7926bbe1182a263b51a7752c606492e3ee4beae4374e7",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9346272721886635,
+        "indirectTransport": 0.9312507291570655
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8745508999876621
+      },
+      "totalScore": 0.9336130258090177
+    },
+    {
+      "id": "case-0130",
+      "definitionFingerprint": "f041dfb5c5e9bb0068f100e950fd724f319631c9ebf4eda3bcc75a5e10d5b8ea",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9450152367353439,
+        "indirectTransport": 0.9312507378440981
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8938980953062128
+      },
+      "totalScore": 0.9408646606622647
+    },
+    {
+      "id": "case-0131",
+      "definitionFingerprint": "07f4b1f5ca87dfb35e813ed41a0cdffcc7b49c85b4fafcbda34053453dd64352",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9586179964244366,
+        "indirectTransport": 0.9502999891808848
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9139074282073125
+      },
+      "totalScore": 0.9561149782846979
+    },
+    {
+      "id": "case-0132",
+      "definitionFingerprint": "ac5a3f8c6c05a104d4343bd051f98b513426aaca3f37df6ea2a7b355ac7ebd3c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9602561108767986,
+        "indirectTransport": 0.9502999855698658
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9181048171793009
+      },
+      "totalScore": 0.9572583703109635
+    },
+    {
+      "id": "case-0133",
+      "definitionFingerprint": "f0b903d804c52368cfe5675cf59036f912a918c6e30672c97e02cdc1e493a641",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9595116786658764,
+        "indirectTransport": 0.9502999919546415
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9158197683067556
+      },
+      "totalScore": 0.956738836048412
+    },
+    {
+      "id": "case-0134",
+      "definitionFingerprint": "dcaa32cf24311fad1f1fdac7fd003b935eeca2fbadcdc39de72461959e1523d8",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8861628696322441,
+        "indirectTransport": 0.8613717264091942
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6745984160283116
+      },
+      "totalScore": 0.8786515268926227
+    },
+    {
+      "id": "case-0135",
+      "definitionFingerprint": "7d0b53f790f3ef54cfdc7c62532def70d6350ac8b60c201b3f75f5512917020e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9139587134122849,
+        "indirectTransport": 0.8613717169662336
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7541772330994719
+      },
+      "totalScore": 0.8978541340482447
+    },
+    {
+      "id": "case-0136",
+      "definitionFingerprint": "b397b9c1d3700825cdfe9a587bc039a5e6ca95937f5be3eae342e73fc3e148c1",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8440637439489365,
+        "indirectTransport": 0.8030175303599741
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.4233257445310311
+      },
+      "totalScore": 0.8315343227246828
+    },
+    {
+      "id": "case-0137",
+      "definitionFingerprint": "1020410b1f9a8dd11dd83685f5e381038cbc2e2077ed18afd8c72c8095c640f2",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8658157289028168,
+        "indirectTransport": 0.8030175231025062
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.49974369890624337
+      },
+      "totalScore": 0.8464773398146382
+    },
+    {
+      "id": "case-0138",
+      "definitionFingerprint": "cf73e23b4602fc8a94b54e4c11fa59fde4975c5b1b6803300d0eed651095f80b",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.4868852496147156,
+        "indirectTransport": 0.7556539787450683
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.043888027657521866
+      },
+      "totalScore": 0.5555146598884021
+    },
+    {
+      "id": "case-0139",
+      "definitionFingerprint": "4a36eaf56c4db3db97b8d6a09fb3e4724ecc754faefb4a1455ee66d78b091109",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5489441752433777,
+        "indirectTransport": 0.7556540382771713
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04731401117169298
+      },
+      "totalScore": 0.6041803954853192
+    },
+    {
+      "id": "case-0140",
+      "definitionFingerprint": "9c3bb5084b38e388e8e0b74151fa178033d112be51652d2d56e9165c955c8957",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.4863906502723694,
+        "indirectTransport": 0.7615536209983029
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04015091109904456
+      },
+      "totalScore": 0.5564162421727659
+    },
+    {
+      "id": "case-0141",
+      "definitionFingerprint": "a84ccc86f741559478ed437185012cb2381aa4efb906e9bb57d6cc9e24dc232d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.5466504991054535,
+        "indirectTransport": 0.7615535738968408
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.04356275398167786
+      },
+      "totalScore": 0.6038192611974268
+    },
+    {
+      "id": "case-0142",
+      "definitionFingerprint": "70182dcbbe762aa41d81824f1e675697fda2d41623e10290310f873569a7facc",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.826795905828476,
+        "indirectTransport": 0.8008849595977465
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.24746382733283123
+      },
+      "totalScore": 0.8189358126182115
+    },
+    {
+      "id": "case-0143",
+      "definitionFingerprint": "026d54e6b4e8d334c8a0a7c921d0a90d2e5e45ac9c5ff7a8826a32eaa144cd43",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8402298837900162,
+        "indirectTransport": 0.8008850078809184
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.34391827009822096
+      },
+      "totalScore": 0.8282276703014556
+    },
+    {
+      "id": "case-0144",
+      "definitionFingerprint": "08c819634807f07e8fa185bc5cf77485145c1f89af7da490a200e43eaf8f1826",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7997651547193527,
+        "indirectTransport": 0.6242884768883799
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5080673885628737
+      },
+      "totalScore": 0.7424878143211683
+    },
+    {
+      "id": "case-0145",
+      "definitionFingerprint": "497f8db60fda4dfe06f535b730c3216f327fa52da5447f9712ca2f27828b3584",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8127750158309937,
+        "indirectTransport": 0.6242884785716813
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.511195165856043
+      },
+      "totalScore": 0.7509220163693479
+    },
+    {
+      "id": "case-0146",
+      "definitionFingerprint": "1749a39e64b51bdfb1d39f08909a75e7c5cff63c5178e63395311db91631cd82",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8662184327840805,
+        "indirectTransport": 0.8635579811551617
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.44967056640780534
+      },
+      "totalScore": 0.8654194378280595
+    },
+    {
+      "id": "case-0147",
+      "definitionFingerprint": "c096cdd7866de61ba04ad491f896d765d3159dc72ec49c0be9f132501e8383fa",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8883335962891579,
+        "indirectTransport": 0.8635579555223395
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5806472257514559
+      },
+      "totalScore": 0.8808271810696239
+    },
+    {
+      "id": "case-0148",
+      "definitionFingerprint": "a263693422bd2b429f474714d4d4376563fc9718e9a329382eaa2a33376db053",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.892054833471775,
+        "indirectTransport": 0.8669168838393386
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.673909336143212
+      },
+      "totalScore": 0.8844378575433027
+    },
+    {
+      "id": "case-0149",
+      "definitionFingerprint": "8c62110b502637ffff779fad6ab905eb93c00010afb1ef120717e78d13d3952c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8775360584259033,
+        "indirectTransport": 0.866916839338221
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6301728615799222
+      },
+      "totalScore": 0.8743367063806495
+    },
+    {
+      "id": "case-0150",
+      "definitionFingerprint": "86072c577a0bac8f3e18e5d3ca4c7b686e88d50b4971d91d214e4bda063f96d1",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9085185378789902,
+        "indirectTransport": 0.8669168576043093
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7273589020182651
+      },
+      "totalScore": 0.8958326557991547
+    },
+    {
+      "id": "case-0151",
+      "definitionFingerprint": "0d599cf92360c75c549b354b690a7f1736432d3f9b9ef20f2ed461cf7e12827e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9111929163336754,
+        "indirectTransport": 0.9151313558117803
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7358952392849463
+      },
+      "totalScore": 0.9123726651194105
+    },
+    {
+      "id": "case-0152",
+      "definitionFingerprint": "8348b179800b013141f4ba11b35f3a4aaf3191f7f4a2fa3409e4ee28077543f5",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8969236835837364,
+        "indirectTransport": 0.9151313534240255
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6909579760831548
+      },
+      "totalScore": 0.9023476150529234
+    },
+    {
+      "id": "case-0153",
+      "definitionFingerprint": "fbd7d612feb08f457d262f134ca8519628145e01ed31d3aaf3b6cb2c4a71c81e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9301795661449432,
+        "indirectTransport": 0.915131348129059
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7968102282393379
+      },
+      "totalScore": 0.9256393019425738
+    },
+    {
+      "id": "case-0154",
+      "definitionFingerprint": "806ec02cc1b106ad464294979bd4c06dcc586b695bc37185844f5d56324d6be8",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7493192851543427,
+        "indirectTransport": 0.8967508566006633
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.35904613984166667
+      },
+      "totalScore": 0.7908031255763054
+    },
+    {
+      "id": "case-0155",
+      "definitionFingerprint": "5407f9df48c2031d696ded046161af171aef418e395fbc6d14ac9b875a28f0ec",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7887412756681442,
+        "indirectTransport": 0.896750842673299
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.44026590937864973
+      },
+      "totalScore": 0.8197015116576946
+    },
+    {
+      "id": "case-0156",
+      "definitionFingerprint": "036e6b3c295837e797ca9896c584183ec253202942b2b064935fc790a32af59e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6377957165241241,
+        "indirectTransport": 0.7540061814625019
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.13756961684557634
+      },
+      "totalScore": 0.6706402122614629
+    },
+    {
+      "id": "case-0157",
+      "definitionFingerprint": "b14b7b70162db5fc4f86c4eccab39f707164836503b23062fb265103751d274c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6603934466838837,
+        "indirectTransport": 0.7540061796428508
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.18841497784014838
+      },
+      "totalScore": 0.6871861534628153
+    },
+    {
+      "id": "case-0158",
+      "definitionFingerprint": "2d8df7ceda96cd41d62176a4c382a2ff0e739ca852865387df2d87624d2c2614",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.6862584948539734,
+        "indirectTransport": 0.7468652331586485
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.1021776910070914
+      },
+      "totalScore": 0.7039050588045965
+    },
+    {
+      "id": "case-0159",
+      "definitionFingerprint": "99187c0bec262b9dfc234817f6806de6f9e765e43e3644a619b0301b179482bf",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7099614441394806,
+        "indirectTransport": 0.7468652290068899
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.17350849942304203
+      },
+      "totalScore": 0.7208368948313957
+    },
+    {
+      "id": "case-0160",
+      "definitionFingerprint": "404411ef731df535553b40ba23e3216d4a1748c60ddb12d1323bf55ac9de5ced",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9289119318127632,
+        "indirectTransport": 0.8895158864585379
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8222693362477003
+      },
+      "totalScore": 0.9169133408191363
+    },
+    {
+      "id": "case-0161",
+      "definitionFingerprint": "dff05e7f37ca1f4517319eb547e74ce092770bdece4d124e49c26e6659a8cbae",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9253687262535095,
+        "indirectTransport": 0.8895158776393939
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8192392579905572
+      },
+      "totalScore": 0.9144637280067911
+    },
+    {
+      "id": "case-0162",
+      "definitionFingerprint": "697a07f014d39564f96c2f0d55755b94b9a23626210b14abc13e4a3e5bd9eb14",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9360486939549446,
+        "indirectTransport": 0.889515892984303
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8357559653653881
+      },
+      "totalScore": 0.9218388832667188
+    },
+    {
+      "id": "case-0163",
+      "definitionFingerprint": "067bdd6358149c0a5bf3b2991d59bd971477ff2f3ff4926be76b4d5534f408f9",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9260590821504593,
+        "indirectTransport": 0.9346201735519274
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8438158162476614
+      },
+      "totalScore": 0.928619142684769
+    },
+    {
+      "id": "case-0164",
+      "definitionFingerprint": "4fbb73cce1226d3c5c4b9c0945840fa464ce9e90be8afcddbe299bfffb82cdd9",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9174724817276001,
+        "indirectTransport": 0.934620175827571
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8241356851969613
+      },
+      "totalScore": 0.9225834901768765
+    },
+    {
+      "id": "case-0165",
+      "definitionFingerprint": "fd696925c5fd63f87f59945c68f8a237b3bdd920a698840c39fd7572ada4850d",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9376810230314732,
+        "indirectTransport": 0.9346201647603457
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.866200853137707
+      },
+      "totalScore": 0.936761714496245
+    },
+    {
+      "id": "case-0166",
+      "definitionFingerprint": "38bb07c68f7b0e8dc249a5e2e9d6df83db8dc78ca91aff31ebdb717e8b294996",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9396930299699306,
+        "indirectTransport": 0.9343989157805823
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8976385367448529
+      },
+      "totalScore": 0.9381016539063664
+    },
+    {
+      "id": "case-0167",
+      "definitionFingerprint": "cc4ad288e7198554be9eeb686f80ff5b187970f8c6ca755a829a60ab0976a2dd",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9314460828900337,
+        "indirectTransport": 0.934398894512242
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.880298703002336
+      },
+      "totalScore": 0.9323309452527918
+    },
+    {
+      "id": "case-0168",
+      "definitionFingerprint": "5f4b9c975716fde01a9eb00377ab26d8fb14aff41f7e98555e79632192a3c144",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9496777392923832,
+        "indirectTransport": 0.9343988963155543
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.9172871119934523
+      },
+      "totalScore": 0.9450680381507157
+    },
+    {
+      "id": "case-0169",
+      "definitionFingerprint": "d37db9d3f1504d5992bd92991878138cbe4c12586555a1e16d998558627fb8e3",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9358867704868317,
+        "indirectTransport": 0.9042569348515586
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8436906849532534
+      },
+      "totalScore": 0.9262833767266176
+    },
+    {
+      "id": "case-0170",
+      "definitionFingerprint": "2145bc06e4860ad93b447e402bb4f63658b29fc93c9735ccca75411939678e3e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9331440627574921,
+        "indirectTransport": 0.9042569225581031
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8383913856829168
+      },
+      "totalScore": 0.9243823417567418
+    },
+    {
+      "id": "case-0171",
+      "definitionFingerprint": "774244e65b98cfd897ad6b5d24b641a15e3fdab4affcb0e4c252e9692c72b34e",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.942057766020298,
+        "indirectTransport": 0.9042569526170421
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8593029994895917
+      },
+      "totalScore": 0.930554536909537
+    },
+    {
+      "id": "case-0172",
+      "definitionFingerprint": "1995ba4a7a91d4e38f3850cdb4f0f2074178f77709a16d8635604d2bc86320ab",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8851173967123032,
+        "indirectTransport": 0.8325552307931916
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8157426689998829
+      },
+      "totalScore": 0.8690095113641968
+    },
+    {
+      "id": "case-0173",
+      "definitionFingerprint": "7805414d31e44e4000c3c970500390df39801d4ba72a03a889f14f48001536f4",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9077301993966103,
+        "indirectTransport": 0.8325551952698252
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8414255480267457
+      },
+      "totalScore": 0.8844914916265555
+    },
+    {
+      "id": "case-0174",
+      "definitionFingerprint": "27ebc9ae690735cb04cd5be2cc2d4c301bef3403677ca5d4811dc4c6f516c947",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8239767402410507,
+        "indirectTransport": 0.725461313274218
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6091669267363614
+      },
+      "totalScore": 0.7930941454109565
+    },
+    {
+      "id": "case-0175",
+      "definitionFingerprint": "13aa1ca322e1ddc59d9d1d2fcce9bfba3292a6d893d6cd7789c5648af0b51885",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8840349093079567,
+        "indirectTransport": 0.7254613082141257
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7317615696068971
+      },
+      "totalScore": 0.8331301798835186
+    },
+    {
+      "id": "case-0176",
+      "definitionFingerprint": "a7b02d22d08a5ec7a19491fb6cc35444e6da00361dfc4bae71b01f7f5469a687",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8860420659184456,
+        "indirectTransport": 0.82466278629096
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.721837226842763
+      },
+      "totalScore": 0.8671634366178121
+    },
+    {
+      "id": "case-0177",
+      "definitionFingerprint": "dc54139f9418751e78793308052624caa79e7af48538767a7f9f9609d81d1355",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9200550317764282,
+        "indirectTransport": 0.8246627808993888
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7815157041477508
+      },
+      "totalScore": 0.8903332274231793
+    },
+    {
+      "id": "case-0178",
+      "definitionFingerprint": "15d2dd6c3a2301c05c43b85cc987ea3361101a359badc3fda404e4c2e358086b",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8989195823669434,
+        "indirectTransport": 0.852723553456938
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7677801168960287
+      },
+      "totalScore": 0.8848039782571051
+    },
+    {
+      "id": "case-0179",
+      "definitionFingerprint": "c17800bf8c338295316e3a40d8b9d3f30ae39dcf0260737b276c6561d4bb13bf",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9289543181657791,
+        "indirectTransport": 0.8527235535476598
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8139110546680968
+      },
+      "totalScore": 0.9053959098081614
+    },
+    {
+      "id": "case-0180",
+      "definitionFingerprint": "e233009a3bcadc200cd27047b290a5966f82984a5c534392393412b645e59181",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8865816369652748,
+        "indirectTransport": 0.866574631316759
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7634430134494323
+      },
+      "totalScore": 0.8805315135082433
+    },
+    {
+      "id": "case-0181",
+      "definitionFingerprint": "8679332dc35ae9c4c16492cbf1f4265bd031297b2dafee9cde2f6d462c636cda",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9047331809997559,
+        "indirectTransport": 0.8665746197398272
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.8026718727414847
+      },
+      "totalScore": 0.8931124683402462
+    },
+    {
+      "id": "case-0182",
+      "definitionFingerprint": "202ae4b94f0afc00d84fd5642618945b5740f339335f9b4d2e2d40dff04b4f76",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8307784497737885,
+        "indirectTransport": 0.6620540806954642
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6595613260498796
+      },
+      "totalScore": 0.7760821518962642
+    },
+    {
+      "id": "case-0183",
+      "definitionFingerprint": "be10818a5bd139c570a539dde0dcfa1d9efab906e5292de8e6715ddebcc7b446",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8522315472364426,
+        "indirectTransport": 0.6620540797779948
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6445100795070183
+      },
+      "totalScore": 0.7900568891944927
+    },
+    {
+      "id": "case-0184",
+      "definitionFingerprint": "e858313fab23b8698970a0037581b8fb364957a35a003cc313c3e9d66fd45158",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8126803487539291,
+        "indirectTransport": 0.6394358163962426
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6319087079449675
+      },
+      "totalScore": 0.7562805273666164
+    },
+    {
+      "id": "case-0185",
+      "definitionFingerprint": "0960cd50750c7f8997f1cf962b5b093d2a2da2b1a4cc45146d1060b1d2088943",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.834270179271698,
+        "indirectTransport": 0.6394358033682594
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6524173147947295
+      },
+      "totalScore": 0.7702891649103574
+    },
+    {
+      "id": "case-0186",
+      "definitionFingerprint": "05839a42e0fd333a936b1fb96e09fc8c72db1c28f735b42dd67b12d44ab062ca",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8246469348669052,
+        "indirectTransport": 0.7003110544760911
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.661985527604702
+      },
+      "totalScore": 0.785190305556725
+    },
+    {
+      "id": "case-0187",
+      "definitionFingerprint": "e571a7c358d84dcb71e7deff8cc803855abcb0e868dacc7c000d621de8610823",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8421577960252762,
+        "indirectTransport": 0.7003110523599525
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.669690909460769
+      },
+      "totalScore": 0.7968245854919502
+    },
+    {
+      "id": "case-0188",
+      "definitionFingerprint": "8cef74a6f6673c04c1989e9ee824d4ab415a48972a5ec22efa519d6ce7e594ee",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.7944515198469162,
+        "indirectTransport": 0.5432761468886327
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5348310791800033
+      },
+      "totalScore": 0.7088484129334458
+    },
+    {
+      "id": "case-0189",
+      "definitionFingerprint": "535b9c0b17b4530c8a8504c2fbcdd9d68a09ac5e4eac7d916149ba471c41e974",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8047513216733932,
+        "indirectTransport": 0.5432761570843887
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5055131857050583
+      },
+      "totalScore": 0.7152689665378124
+    },
+    {
+      "id": "case-0190",
+      "definitionFingerprint": "5e16f3de688f701762562e5e7c28b5dc2857c2cd566ebaee33475b76dab760bf",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.840073749423027,
+        "indirectTransport": 0.721751615758963
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6847089273986061
+      },
+      "totalScore": 0.8026727499743869
+    },
+    {
+      "id": "case-0191",
+      "definitionFingerprint": "6ffc29f9356a8b58c4bfde390125d6ea8a83727911f144270d3ea2a96af7c4b8",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8587790578603745,
+        "indirectTransport": 0.7217516276923464
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7002066319982987
+      },
+      "totalScore": 0.8151421362748515
+    },
+    {
+      "id": "case-0192",
+      "definitionFingerprint": "4c8de8ac4053fdbdd8eae3307dbd38534a4d16f464bab619feb4906eeee43552",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8495124876499176,
+        "indirectTransport": 0.7390377504066716
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.745630919202813
+      },
+      "totalScore": 0.8147395971806414
+    },
+    {
+      "id": "case-0193",
+      "definitionFingerprint": "abdb1e5d44ab7f27852ae003061f287f21934a303674e3dc3ed216e2ae3b5221",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.872366338968277,
+        "indirectTransport": 0.7390377412203912
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7673697176360292
+      },
+      "totalScore": 0.8300212571771878
+    },
+    {
+      "id": "case-0194",
+      "definitionFingerprint": "741d1c3e4cd5fd510e7b000e27e83dfec56d1cba649cca73c53ae9917526748a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8206914514303207,
+        "indirectTransport": 0.754316362438598
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6884174803271894
+      },
+      "totalScore": 0.8001879283545216
+    },
+    {
+      "id": "case-0195",
+      "definitionFingerprint": "4b23a82e8b081d75438b02b2e965a2eb62fcc9b5e5eaa117d31e574f84f35c35",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8233054727315903,
+        "indirectTransport": 0.7543164189347499
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7329280749705505
+      },
+      "totalScore": 0.8019711953803719
+    },
+    {
+      "id": "case-0196",
+      "definitionFingerprint": "e90de8f73efc3e4e817d408a7c52551bf747a7ee434616cc2094e5e8b3af5408",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8320229798555374,
+        "indirectTransport": 0.7888035670241472
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.5849525109668321
+      },
+      "totalScore": 0.8188142358985236
+    },
+    {
+      "id": "case-0197",
+      "definitionFingerprint": "f1adb2552eb8a984300c91d790fb944cffeca06c3a02e915c521b1d129428234",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.8461924195289612,
+        "indirectTransport": 0.7888035459242764
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.6301431420011796
+      },
+      "totalScore": 0.8285506218327311
+    },
+    {
+      "id": "case-0198",
+      "definitionFingerprint": "baa7d9d2ebf6221a42f7d0a4790ac2c5349d593005c17cff5be52b89e85bf69c",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9176278412342072,
+        "indirectTransport": 0.919904915362671
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7631509792806664
+      },
+      "totalScore": 0.9183103710019401
+    },
+    {
+      "id": "case-0199",
+      "definitionFingerprint": "bce17cdfec093c1585fff6fc987a466a522d1460e12b900854398f59e85da390",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9138732552528381,
+        "indirectTransport": 0.9199049400659381
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7336919364737698
+      },
+      "totalScore": 0.9156785962194697
+    },
+    {
+      "id": "case-0200",
+      "definitionFingerprint": "6c818c6619a4220daf982ab4587a3f410705970947f94fbe725ca2519d54565a",
+      "mode": "strict",
+      "scores": {
+        "perceptualFlip": 0.9254732206463814,
+        "indirectTransport": 0.9199049102390202
+      },
+      "diagnosticScores": {
+        "worstPatchFlip": 0.7904848031136984
+      },
+      "totalScore": 0.923799197671873
+    }
+  ]
+}

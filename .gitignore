@@ -40,10 +40,9 @@ __pycache__/
 # Repository-specific scratch files
 /Phong_PRTdemo/
 
-# Local staging for the external code-evaluation container. The trusted script is
-# versioned, but candidate snapshots, hidden test files, and generated results are not.
+# Local staging for the external code-evaluation container. Candidate snapshots and
+# generated results remain local. The compact trusted /test_files bundle is versioned.
 /workspace/
-/test_files/
 /eval/
 
 # Evaluation runs remain local; the official 4096 SPP Offline reference is versioned.

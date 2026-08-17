@@ -33,6 +33,8 @@ RUNTIME_ROOT = EVAL_ROOT / "test_by_code_runtime"
 
 REQUIRED_RESULT_KEYS = {"resolved", "score", "reason"}
 REQUIRED_CAPTURE_FILES = ("realtime.png", "indirect-linear.pfm", "state.json")
+REFERENCE_MANIFEST_NAME = "reference-manifest.json"
+OCCLUSION_MASK_WEIGHTS_NAME = "occlusion-mask-weights.f32"
 LUMINANCE = (0.2126, 0.7152, 0.0722)
 
 _numpy: Any = None
@@ -193,8 +195,8 @@ def validate_config(config: dict[str, Any]) -> None:
         "indirectTransport": 0.3,
         "occlusionLeak": 0.0,
     }
-    if config.get("schemaVersion") != 5:
-        raise EvaluationError("score config schemaVersion 必须为 5")
+    if config.get("schemaVersion") != 6:
+        raise EvaluationError("score config schemaVersion 必须为 6")
     if config.get("aggregation") != "weighted-geometric-mean":
         raise EvaluationError("score aggregation 不匹配")
     if config.get("weights") != expected_weights:
@@ -210,11 +212,56 @@ def validate_config(config: dict[str, Any]) -> None:
         raise EvaluationError("FLIP pixelsPerDegree 必须为 67")
     if worst != {"tileSize": 32, "percentile": 0.95}:
         raise EvaluationError("worst-patch FLIP config 不匹配")
+    diagnostic = config.get("diagnosticResolution", {})
+    if diagnostic != {
+        "width": 200,
+        "height": 150,
+        "downsample": "linear-area-average",
+    }:
+        raise EvaluationError("diagnostic resolution config 不匹配")
+
+
+def validate_reference_bundle(
+    reference_root: Path, config: dict[str, Any], case_count: int
+) -> dict[str, Any]:
+    manifest = read_json(
+        require_file(reference_root / REFERENCE_MANIFEST_NAME, "reference manifest")
+    )
+    if manifest.get("schemaVersion") != 1:
+        raise EvaluationError("reference manifest schemaVersion 必须为 1")
+    if manifest.get("caseCount") != case_count:
+        raise EvaluationError("reference manifest caseCount 与 test set 不一致")
+    if int(manifest.get("samplesPerPixel", 0)) < 4096:
+        raise EvaluationError("reference SPP < 4096")
+    if manifest.get("antialiasing") != config["antialiasing"]:
+        raise EvaluationError("reference antialiasing protocol 不匹配")
+    if manifest.get("diagnosticResolution") != config["diagnosticResolution"]:
+        raise EvaluationError("reference diagnostic resolution 不匹配")
+    mask = manifest.get("occlusionMaskWeights", {})
+    expected_mask = {
+        "path": OCCLUSION_MASK_WEIGHTS_NAME,
+        "format": "float32-little-endian-case-major",
+    }
+    if mask != expected_mask:
+        raise EvaluationError("reference occlusion mask format 不匹配")
+    mask_path = require_file(
+        reference_root / OCCLUSION_MASK_WEIGHTS_NAME,
+        "reference occlusion mask weights",
+    )
+    resolution = config["diagnosticResolution"]
+    expected_bytes = case_count * int(resolution["width"]) * int(resolution["height"]) * 4
+    if mask_path.stat().st_size != expected_bytes:
+        raise EvaluationError("reference occlusion mask weights size 不匹配")
+    return manifest
 
 
 def validate_baseline(
     report: dict[str, Any], states: list[dict[str, Any]], config: dict[str, Any]
 ) -> list[dict[str, Any]]:
+    if report.get("schemaVersion") != 1:
+        raise EvaluationError("baseline score report schemaVersion 必须为 1")
+    if report.get("diagnosticResolution") != config["diagnosticResolution"]:
+        raise EvaluationError("baseline diagnostic resolution 不匹配")
     if report.get("weights") != config["weights"]:
         raise EvaluationError("baseline score weights 不匹配")
     if report.get("regressionGates") != config["regressionGates"]:
@@ -557,6 +604,41 @@ def read_pfm(path: Path) -> Any:
     )
 
 
+def downsample_linear_area(image: Any, width: int, height: int, label: str) -> Any:
+    load_dependencies()
+    value = _numpy.asarray(image, dtype=_numpy.float64)
+    if value.ndim != 3:
+        raise EvaluationError(f"{label} 必须是 HxWxC image")
+    source_height, source_width, channels = value.shape
+    if source_width == width and source_height == height:
+        return value
+    if source_width % width != 0 or source_height % height != 0:
+        raise EvaluationError(
+            f"{label} 无法从 {source_width}x{source_height} area-average 到 {width}x{height}"
+        )
+    block_width = source_width // width
+    block_height = source_height // height
+    return value.reshape(
+        height, block_height, width, block_width, channels
+    ).mean(axis=(1, 3), dtype=_numpy.float64)
+
+
+def read_occlusion_mask_weights(
+    path: Path, case_index: int, width: int, height: int
+) -> Any:
+    load_dependencies()
+    count = width * height
+    with path.open("rb") as stream:
+        stream.seek(case_index * count * 4)
+        weights = _numpy.frombuffer(stream.read(count * 4), dtype="<f4")
+    if weights.size != count:
+        raise EvaluationError(f"case-{case_index + 1:04d} occlusion mask payload size 无效")
+    weights = weights.reshape((height, width)).astype(_numpy.float64, copy=False)
+    if not _numpy.all(_numpy.isfinite(weights)) or _numpy.any(weights < 0.0) or _numpy.any(weights > 1.0):
+        raise EvaluationError(f"case-{case_index + 1:04d} occlusion mask weight 无效")
+    return weights
+
+
 def clamp01(value: float) -> float:
     return max(0.0, min(1.0, float(value)))
 
@@ -571,8 +653,10 @@ def symmetric_l1_similarity(reference: Any, candidate: Any) -> float:
     return clamp01(1.0 - error)
 
 
-def occlusion_leak_similarity(reference: Any, candidate: Any, mask: Any) -> float:
-    mask_weight = _numpy.rint(mask.astype(_numpy.float64) * 4.0 / 255.0) / 4.0
+def occlusion_leak_similarity_weights(
+    reference: Any, candidate: Any, mask_weight: Any
+) -> float:
+    mask_weight = _numpy.asarray(mask_weight, dtype=_numpy.float64)
     selected = mask_weight > 0.0
     if int(_numpy.count_nonzero(selected)) == 0:
         return 1.0
@@ -589,6 +673,11 @@ def occlusion_leak_similarity(reference: Any, candidate: Any, mask: Any) -> floa
         _numpy.sum(weights * _numpy.maximum(candidate_values - reference_values, 0.0), dtype=_numpy.float64)
     )
     return clamp01(1.0 - excess / denominator)
+
+
+def occlusion_leak_similarity(reference: Any, candidate: Any, mask: Any) -> float:
+    mask_weight = _numpy.rint(mask.astype(_numpy.float64) * 4.0 / 255.0) / 4.0
+    return occlusion_leak_similarity_weights(reference, candidate, mask_weight)
 
 
 def worst_patch_similarity(flip_map: Any, tile_size: int, percentile: float) -> float:
@@ -615,11 +704,6 @@ def score_case(arguments: tuple[int, Path, Path, dict[str, Any]]) -> dict[str, f
     case_id = f"case-{index:04d}"
     realtime = realtime_root / "cases" / case_id
     reference = reference_root / "cases" / case_id
-    manifest = read_json(reference / "manifest.json")
-    if int(manifest.get("samplesPerPixel", 0)) < 4096:
-        raise EvaluationError(f"{case_id} reference SPP < 4096")
-    if manifest.get("antialiasing") != config["antialiasing"]:
-        raise EvaluationError(f"{case_id} antialiasing protocol 不匹配")
     offline_png = require_file(reference / "offline.png", f"{case_id} offline.png")
     realtime_png = require_file(realtime / "realtime.png", f"{case_id} realtime.png")
     flip_map, mean_flip, parameters = _flip_evaluator.evaluate(
@@ -644,17 +728,31 @@ def score_case(arguments: tuple[int, Path, Path, dict[str, Any]]) -> dict[str, f
     realtime_indirect = read_pfm(
         require_file(realtime / "indirect-linear.pfm", f"{case_id} realtime indirect")
     )
-    if offline_indirect.shape != realtime_indirect.shape:
-        raise EvaluationError(f"{case_id} indirect resolution 不一致")
-    mask = _numpy.asarray(
-        _image.open(
-            require_file(reference / "offline-occlusion-mask.pgm", f"{case_id} occlusion mask")
-        ).convert("L")
+    diagnostic = config["diagnosticResolution"]
+    diagnostic_width = int(diagnostic["width"])
+    diagnostic_height = int(diagnostic["height"])
+    expected_shape = (diagnostic_height, diagnostic_width, 3)
+    if offline_indirect.shape != expected_shape:
+        raise EvaluationError(
+            f"{case_id} offline indirect resolution 必须为 "
+            f"{diagnostic_width}x{diagnostic_height}"
+        )
+    realtime_indirect = downsample_linear_area(
+        realtime_indirect,
+        diagnostic_width,
+        diagnostic_height,
+        f"{case_id} realtime indirect",
     )
-    if mask.shape != offline_indirect.shape[:2]:
-        raise EvaluationError(f"{case_id} occlusion mask resolution 不一致")
+    mask_weight = read_occlusion_mask_weights(
+        reference_root / OCCLUSION_MASK_WEIGHTS_NAME,
+        index - 1,
+        diagnostic_width,
+        diagnostic_height,
+    )
     indirect_score = symmetric_l1_similarity(offline_indirect, realtime_indirect)
-    occlusion_score = occlusion_leak_similarity(offline_indirect, realtime_indirect, mask)
+    occlusion_score = occlusion_leak_similarity_weights(
+        offline_indirect, realtime_indirect, mask_weight
+    )
     return {
         "id": case_id,
         "total": weighted_score(flip_score, indirect_score),
@@ -747,6 +845,7 @@ def evaluate() -> dict[str, Any]:
         shutil.rmtree(RUNTIME_ROOT)
     RUNTIME_ROOT.mkdir(parents=True)
     reference_root = resolve_references()
+    validate_reference_bundle(reference_root, config, len(states))
     candidate_source = RUNTIME_ROOT / "candidate-source"
     candidate_build = RUNTIME_ROOT / "candidate-build"
     candidate_realtime = RUNTIME_ROOT / "candidate-realtime"

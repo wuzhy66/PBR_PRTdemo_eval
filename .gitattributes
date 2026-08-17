@@ -1,3 +1,6 @@
 /test-results/references/official-4096-v*/**/*.pfm filter=lfs diff=lfs merge=lfs -text
 /test-results/references/official-4096-v*/**/*.pgm filter=lfs diff=lfs merge=lfs -text
 /test-results/references/official-4096-v*/**/*.png filter=lfs diff=lfs merge=lfs -text
+/test_files/**/*.pfm filter=lfs diff=lfs merge=lfs -text
+/test_files/**/*.png filter=lfs diff=lfs merge=lfs -text
+/test_files/**/*.f32 filter=lfs diff=lfs merge=lfs -text

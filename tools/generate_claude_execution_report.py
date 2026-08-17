@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import re
 import subprocess
@@ -17,6 +18,11 @@ DATE_PATTERNS = (
     re.compile(r"\b20\d{6}(?:[-_]\d{6})?\b"),
     re.compile(r"\b20\d{2}[-/]\d{1,2}[-/]\d{1,2}(?:[T\s]\d{1,2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?\b"),
     re.compile(r"\b20\d{2}年\d{1,2}月\d{1,2}日(?:\s*\d{1,2}时\d{1,2}分(?:\d{1,2}秒)?)?"),
+    re.compile(
+        r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+"
+        r"\d{1,2}\s+(?:\d{2}:\d{2}|20\d{2})\b",
+        re.I,
+    ),
     re.compile(r"\b\d{1,2}:\d{2}:\d{2}(?:\.\d+)?\b"),
 )
 DURATION_PATTERNS = (
@@ -210,15 +216,25 @@ def parse_subagents(transcript: Path) -> list[dict[str, Any]]:
     return subagents
 
 
-def git_information(repository: Path, working_tree_candidate: bool = False) -> dict[str, Any]:
+def git_information(
+    repository: Path,
+    working_tree_candidate: bool = False,
+    baseline_revision: str | None = None,
+) -> dict[str, Any]:
     if working_tree_candidate:
+        if baseline_revision is not None:
+            raise ValueError("--baseline-revision 不能与 --working-tree-candidate 同时使用")
         baseline = run_git(repository, "rev-parse", "HEAD").strip()
         diff_arguments = (baseline,)
         diff = run_git(repository, "diff", "--no-ext-diff", baseline)
         candidate = f"worktree-{hashlib.sha256(diff.encode('utf-8')).hexdigest()[:12]}"
     else:
         candidate = run_git(repository, "rev-parse", "HEAD").strip()
-        baseline = run_git(repository, "rev-parse", "HEAD^").strip()
+        baseline = run_git(
+            repository,
+            "rev-parse",
+            baseline_revision if baseline_revision is not None else "HEAD^",
+        ).strip()
         diff_arguments = (baseline, candidate)
         diff = run_git(repository, "diff", "--no-ext-diff", *diff_arguments)
     numstat = run_git(repository, "diff", "--numstat", *diff_arguments)
@@ -245,19 +261,239 @@ def git_information(repository: Path, working_tree_candidate: bool = False) -> d
     }
 
 
-def profile_from_report(path: Path) -> dict[str, Any]:
+def payload_from_report(path: Path) -> dict[str, Any]:
     html = path.read_text(encoding="utf-8")
     prefix = "const DATA="
     suffix = ";\nconst esc="
     start = html.find(prefix)
     end = html.find(suffix, start + len(prefix))
     if start < 0 or end < 0:
-        raise ValueError(f"无法从 existing report 提取 profile：{path}")
+        raise ValueError(f"无法从 existing report 提取 payload：{path}")
     payload = json.loads(html[start + len(prefix) : end])
+    if not isinstance(payload, dict):
+        raise ValueError(f"existing report 的 payload 无效：{path}")
+    return payload
+
+
+def profile_from_report(path: Path) -> dict[str, Any]:
+    payload = payload_from_report(path)
     profile = payload.get("profile")
     if not isinstance(profile, dict):
         raise ValueError(f"existing report 不含 profile：{path}")
     return profile
+
+
+def markdown_cell(value: Any) -> str:
+    """将值安全压缩为 GitHub Markdown table cell。"""
+    return str(value).replace("|", "\\|").replace("\r", "").replace("\n", "<br>")
+
+
+def markdown_signed(value: Any) -> str:
+    return f"{float(value):+.8f}"
+
+
+def render_markdown_report(payload: dict[str, Any]) -> str:
+    """生成适合 GitHub 直接渲染的精简但完整 evaluation report。"""
+    profile = payload.get("profile", {})
+    execution = payload.get("execution", {})
+    git = payload.get("git", {})
+    evaluation = payload.get("evaluation", {})
+    tools = execution.get("tools", [])
+    subagents = payload.get("subagents", [])
+
+    candidate = str(git.get("candidate", "unknown"))
+    candidate_label = candidate if candidate.startswith("worktree-") else candidate[:7]
+    baseline_label = str(git.get("baseline", "unknown"))[:7]
+    status_counts = Counter(str(tool.get("status", "ok")) for tool in tools)
+    tool_counts = Counter(str(tool.get("name", "unknown")) for tool in tools)
+    agent_attempts = sum(1 for tool in tools if tool.get("name") == "Agent")
+    added = sum(int(item["added"]) for item in git.get("files", []) if str(item.get("added", "")).isdigit())
+    deleted = sum(int(item["deleted"]) for item in git.get("files", []) if str(item.get("deleted", "")).isdigit())
+
+    lines = [
+        f"# {profile.get('title', 'Rendering evaluation report')}",
+        "",
+        "> GitHub-readable evaluation report。本文件保留指标、过程分析和 tool-call 摘要，不嵌入体积过大的 tool input/output 或完整 Git diff。",
+        "",
+    ]
+
+    if evaluation.get("status") == "complete":
+        normalized = float(evaluation.get("normalizedImprovementScore", 0.0))
+        decision = str(evaluation.get("decision", "unknown"))
+        lines.extend(
+            [
+                "## 最终结果",
+                "",
+                f"**Normalized improvement：`{normalized:.8f}` · Decision：`{decision}`**",
+                "",
+                "| Baseline A | Candidate B / Strict | Mean B−A | Cases | Strict / Excluded / Errors |",
+                "|---:|---:|---:|---:|---:|",
+                (
+                    f"| {float(evaluation.get('averageScoreA', 0)):.8f} "
+                    f"| {float(evaluation.get('averageScoreB', 0)):.8f} "
+                    f"| {markdown_signed(evaluation.get('averageImprovement', 0))} "
+                    f"| {evaluation.get('caseCount', 0)} "
+                    f"| {evaluation.get('strictCases', 0)} / {evaluation.get('excludedCases', 0)} / {evaluation.get('errorCases', 0)} |"
+                ),
+                "",
+                "`Normalized improvement` 是最终 coding improvement 分数；`Strict score` 是单个 renderer 对 offline reference 的绝对分数。",
+                "",
+                "### 指标变化",
+                "",
+                "| 指标 | 权重 | Baseline | Candidate | 变化 | 改善 | 退化 | 不变 |",
+                "|---|---:|---:|---:|---:|---:|---:|---:|",
+            ]
+        )
+        for metric in evaluation.get("metricChanges", []):
+            lines.append(
+                "| {label} | {weight} | {a:.8f} | {b:.8f} | {delta} | {improved} | {worse} | {same} |".format(
+                    label=markdown_cell(metric.get("label", metric.get("key", ""))),
+                    weight=markdown_cell(metric.get("weight", "")),
+                    a=float(metric.get("scoreA", 0)),
+                    b=float(metric.get("scoreB", 0)),
+                    delta=markdown_signed(metric.get("change", 0)),
+                    improved=metric.get("improvedCases", 0),
+                    worse=metric.get("worseCases", 0),
+                    same=metric.get("unchangedCases", 0),
+                )
+            )
+        lines.extend(
+            [
+                "",
+                "### Regression gates",
+                "",
+                "| Gate | Required | Median delta | 改善 | 退化 | 不变 | 结果 |",
+                "|---|---:|---:|---:|---:|---:|---|",
+            ]
+        )
+        gate_labels = {
+            "perceptualFlipMedian": "Median FLIP delta",
+            "worstPatchFlipMedian": "Median worst-patch FLIP delta",
+        }
+        for key, gate in evaluation.get("regressionGates", {}).items():
+            lines.append(
+                "| {label} | {required} | {median} | {improved} | {worse} | {same} | {result} |".format(
+                    label=gate_labels.get(key, key),
+                    required="yes" if gate.get("required") else "no",
+                    median=markdown_signed(gate.get("medianDelta", 0)),
+                    improved=gate.get("improvedCases", 0),
+                    worse=gate.get("worseCases", 0),
+                    same=gate.get("unchangedCases", 0),
+                    result="PASS" if gate.get("passed") else "FAIL",
+                )
+            )
+        lines.append("")
+    else:
+        lines.extend(["## 最终结果", "", "该报告尚未接入正式 evaluation result。", ""])
+
+    lines.extend(["## 总体判断", "", str(profile.get("overall", "")), "", "## 改动与实测评价", ""])
+    for change in profile.get("changes", []):
+        lines.extend(
+            [
+                f"### `{change.get('file', '')}`",
+                "",
+                f"- 改动：{change.get('change', '')}",
+                f"- 目标：{change.get('goal', '')}",
+                f"- 评测：{change.get('assessment', '')}",
+                "",
+            ]
+        )
+
+    lines.extend(["## 做得好的地方", ""])
+    lines.extend(f"- {item}" for item in profile.get("good", []))
+    lines.extend(["", "## 风险与不足", ""])
+    lines.extend(f"- {item}" for item in profile.get("risks", []))
+    lines.extend(["", "## 分项结论", "", "| 维度 | 评价 | 说明 |", "|---|---|---|"])
+    for verdict in profile.get("verdicts", []):
+        lines.append(
+            f"| {markdown_cell(verdict.get('dimension', ''))} | {markdown_cell(verdict.get('rating', ''))} | {markdown_cell(verdict.get('detail', ''))} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## 执行概览",
+            "",
+            f"- Test：`{profile.get('testId', '')}`",
+            f"- Main model：`{execution.get('mainModel', 'unknown')}`",
+            f"- Claude Code：`{execution.get('claudeVersion', 'unknown')}`",
+            f"- Candidate / Baseline：`{candidate_label}` / `{baseline_label}`",
+            f"- Tool calls：{len(tools)}（{status_counts.get('error', 0)} errors，{status_counts.get('warning', 0)} warnings）",
+            f"- Subagents：{len(subagents)} success / {agent_attempts} attempts",
+            f"- Git diff：{len(git.get('files', []))} files，+{added} / -{deleted}，diff check `{git.get('diffCheck', 'unknown')}`",
+            "",
+            "### Tool 类型",
+            "",
+            "| Tool | Calls |",
+            "|---|---:|",
+        ]
+    )
+    for name, count in tool_counts.most_common():
+        lines.append(f"| {markdown_cell(name)} | {count} |")
+
+    lines.extend(["", "## 执行阶段", ""])
+    phases = profile.get("phases", [])
+    for phase in phases:
+        lines.extend(
+            [
+                f"### #{phase.get('start')}–#{phase.get('end')} · {phase.get('name', '')}",
+                "",
+                f"- 动作：{phase.get('action', '')}",
+                f"- 分析：{phase.get('analysis', '')}",
+                f"- 证据：{phase.get('evidence', '')}",
+                "",
+            ]
+        )
+
+    lines.extend(["## Subagent", ""])
+    if subagents:
+        lines.extend(["| 任务 | Requested | Actual | 状态 |", "|---|---|---|---|"])
+        for subagent in subagents:
+            lines.append(
+                f"| {markdown_cell(subagent.get('description', ''))} | {markdown_cell(subagent.get('requestedModel', ''))} | {markdown_cell(subagent.get('actualModel', ''))} | {markdown_cell(subagent.get('status', ''))} |"
+            )
+    else:
+        lines.append("没有成功返回的 subagent。")
+
+    lines.extend(["", "## Git 文件变化", "", "| File | Added | Deleted |", "|---|---:|---:|"])
+    for item in git.get("files", []):
+        lines.append(
+            f"| `{markdown_cell(item.get('file', ''))}` | {markdown_cell(item.get('added', ''))} | {markdown_cell(item.get('deleted', ''))} |"
+        )
+    lines.extend(["", f"Worktree status：`{markdown_cell(git.get('worktreeStatus') or 'clean')}`", ""])
+
+    phase_by_index: dict[int, str] = {}
+    for phase in phases:
+        for index in range(int(phase.get("start", 0)), int(phase.get("end", -1)) + 1):
+            phase_by_index[index] = str(phase.get("name", ""))
+    lines.extend(
+        [
+            "<details>",
+            "<summary><strong>Tool-call 流程摘要</strong></summary>",
+            "",
+            "| # | 阶段 | Tool | 状态 | 摘要 |",
+            "|---:|---|---|---|---|",
+        ]
+    )
+    for tool in tools:
+        index = int(tool.get("index", 0))
+        lines.append(
+            f"| {index} | {markdown_cell(phase_by_index.get(index, ''))} | {markdown_cell(tool.get('name', ''))} | {markdown_cell(tool.get('status', ''))} | {markdown_cell(tool.get('summary', ''))} |"
+        )
+    lines.extend(["", "</details>", ""])
+
+    lines.extend(
+        [
+            "<details>",
+            "<summary><strong>Agent 最终回复</strong></summary>",
+            "",
+            f"<pre>{html.escape(str(execution.get('finalResponse', '')))}</pre>",
+            "",
+            "</details>",
+            "",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def evaluation_summary(
@@ -429,7 +665,16 @@ def main() -> int:
         action="store_true",
         help="将 repository 的 staged/unstaged diff 作为 candidate，HEAD 作为 baseline",
     )
+    parser.add_argument(
+        "--baseline-revision",
+        help="committed candidate 的显式 Git baseline revision；默认使用 HEAD^",
+    )
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--markdown-output",
+        type=Path,
+        help="同时生成 GitHub 可直接阅读的 Markdown report",
+    )
     arguments = parser.parse_args()
 
     transcript = arguments.transcript.resolve()
@@ -450,7 +695,11 @@ def main() -> int:
         profile.update(overrides)
     execution = parse_execution(load_jsonl(transcript))
     subagents = parse_subagents(transcript)
-    git = git_information(repository, arguments.working_tree_candidate)
+    git = git_information(
+        repository,
+        arguments.working_tree_candidate,
+        arguments.baseline_revision,
+    )
     evaluation = evaluation_summary(
         arguments.baseline_score_report,
         arguments.score_report,
@@ -463,6 +712,8 @@ def main() -> int:
         (re.compile(re.escape(str(transcript.parent)), re.I), "<claude-project>"),
         (re.compile(re.escape(str(transcript.parent).replace("\\", "/")), re.I), "<claude-project>"),
         (re.compile(r"[A-Z]:" + r"\\Users\\[^\\\s]+", re.I), "<user-home>"),
+        (re.compile(r"/[A-Z]/Users/[^/\s]+", re.I), "<user-home>"),
+        (re.compile(r"([dl-][rwx-]{9}\s+\d+\s+)\S+"), r"\1<user>"),
         (re.compile(r"[A-Z]:[\\/][^\s\"']*PBR_PRTdemo_TEST\d+", re.I), "<candidate-repository>"),
         (re.compile(r"\b[A-Z]:(?:\\+|/)[^\r\n\"'<>|;&]*", re.I), "<absolute-path>"),
     ]
@@ -481,6 +732,14 @@ def main() -> int:
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
     arguments.output.write_text(html, encoding="utf-8", newline="\n")
     print(f"生成报告：{arguments.output}")
+    if arguments.markdown_output is not None:
+        arguments.markdown_output.parent.mkdir(parents=True, exist_ok=True)
+        arguments.markdown_output.write_text(
+            render_markdown_report(payload),
+            encoding="utf-8",
+            newline="\n",
+        )
+        print(f"生成 Markdown：{arguments.markdown_output}")
     return 0
 
 
