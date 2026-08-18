@@ -15,6 +15,7 @@ import json
 import math
 import multiprocessing
 import os
+import re
 import selectors
 import shutil
 import statistics
@@ -255,8 +256,40 @@ def validate_reference_bundle(
     return manifest
 
 
+def discover_reference_cases(
+    reference_root: Path, total_case_count: int
+) -> list[tuple[str, int]]:
+    cases_root = require_directory(reference_root / "cases", "reference cases")
+    selected: list[tuple[str, int]] = []
+    for path in cases_root.iterdir():
+        if not path.is_dir() or not path.name.startswith("case"):
+            continue
+        name = path.name
+        match = re.search(r"(\d+)$", name)
+        if match is None:
+            raise EvaluationError(f"reference case directory 缺少 numeric id：{name}")
+        index = int(match.group(1))
+        if index < 1 or index > total_case_count:
+            raise EvaluationError(f"reference case id 越界：{name}")
+        require_file(path / "offline.png", f"{name} offline.png")
+        require_file(
+            path / "offline-indirect-linear.pfm",
+            f"{name} offline indirect",
+        )
+        selected.append((name, index))
+    if not selected:
+        raise EvaluationError("reference cases 为空")
+    indices = [index for _, index in selected]
+    if len(indices) != len(set(indices)):
+        raise EvaluationError("reference case id 重复")
+    return sorted(selected, key=lambda item: (item[1], item[0]))
+
+
 def validate_baseline(
-    report: dict[str, Any], states: list[dict[str, Any]], config: dict[str, Any]
+    report: dict[str, Any],
+    states: list[dict[str, Any]],
+    config: dict[str, Any],
+    case_indices: list[int],
 ) -> list[dict[str, Any]]:
     if report.get("schemaVersion") != 1:
         raise EvaluationError("baseline score report schemaVersion 必须为 1")
@@ -267,12 +300,22 @@ def validate_baseline(
     if report.get("regressionGates") != config["regressionGates"]:
         raise EvaluationError("baseline regression gates 不匹配")
     cases = report.get("cases")
-    if not isinstance(cases, list) or len(cases) != len(states):
-        raise EvaluationError("baseline case 数量与 test set 不一致")
+    if not isinstance(cases, list):
+        raise EvaluationError("baseline cases 必须是 array")
+    cases_by_id: dict[str, dict[str, Any]] = {}
+    for case in cases:
+        if not isinstance(case, dict) or not isinstance(case.get("id"), str):
+            raise EvaluationError("baseline case id 无效")
+        case_id = case["id"]
+        if case_id in cases_by_id:
+            raise EvaluationError(f"baseline case id 重复：{case_id}")
+        cases_by_id[case_id] = case
     validated: list[dict[str, Any]] = []
-    for index, (case, state) in enumerate(zip(cases, states), 1):
+    for index in case_indices:
         case_id = f"case-{index:04d}"
+        state = states[index - 1]
         try:
+            case = cases_by_id[case_id]
             if case["id"] != case_id or case["mode"] != "strict":
                 raise ValueError("case id/mode")
             if case["definitionFingerprint"] != canonical_hash(state):
@@ -492,7 +535,7 @@ def capture_cases(
     executable: Path,
     source: Path,
     output: Path,
-    states: list[dict[str, Any]],
+    selected_cases: list[tuple[str, int, dict[str, Any]]],
     contract: dict[str, Any],
 ) -> None:
     output.mkdir(parents=True, exist_ok=False)
@@ -500,7 +543,7 @@ def capture_cases(
     lighting = contract["lighting"]
     material = contract["material"]
     with software_gl_environment() as base_environment:
-        for index, state in enumerate(states, 1):
+        for case_name, index, state in selected_cases:
             case_id = f"case-{index:04d}"
             camera = state["camera"]
             light = state["light"]
@@ -526,7 +569,7 @@ def capture_cases(
                     "PRT_TEST_MATERIAL_AO": format_number(material["ao"]),
                     "PRT_REALTIME_CAPTURE_ONCE": "1",
                     "PRT_REALTIME_OUTPUT_ROOT": str(output),
-                    "PRT_REALTIME_CASE_ID": case_id,
+                    "PRT_REALTIME_CASE_ID": case_name,
                 }
             )
             completed = run_command(
@@ -537,7 +580,7 @@ def capture_cases(
             )
             if completed.returncode != 0:
                 raise command_failure(f"{case_id} realtime capture 失败", completed)
-            case_directory = output / "cases" / case_id
+            case_directory = output / "cases" / case_name
             missing = [name for name in REQUIRED_CAPTURE_FILES if not (case_directory / name).is_file()]
             if missing:
                 raise EvaluationError(f"{case_id} capture 缺少：{','.join(missing)}")
@@ -698,12 +741,14 @@ def weighted_score(flip_score: float, indirect_score: float) -> float:
     return clamp01(math.exp(0.7 * math.log(flip_score) + 0.3 * math.log(indirect_score)))
 
 
-def score_case(arguments: tuple[int, Path, Path, dict[str, Any]]) -> dict[str, float | str]:
+def score_case(
+    arguments: tuple[str, int, Path, Path, dict[str, Any]]
+) -> dict[str, float | str]:
     load_dependencies()
-    index, realtime_root, reference_root, config = arguments
+    case_name, index, realtime_root, reference_root, config = arguments
     case_id = f"case-{index:04d}"
-    realtime = realtime_root / "cases" / case_id
-    reference = reference_root / "cases" / case_id
+    realtime = realtime_root / "cases" / case_name
+    reference = reference_root / "cases" / case_name
     offline_png = require_file(reference / "offline.png", f"{case_id} offline.png")
     realtime_png = require_file(realtime / "realtime.png", f"{case_id} realtime.png")
     flip_map, mean_flip, parameters = _flip_evaluator.evaluate(
@@ -767,10 +812,13 @@ def score_all_cases(
     realtime_root: Path,
     reference_root: Path,
     config: dict[str, Any],
-    count: int,
+    selected_cases: list[tuple[str, int]],
 ) -> list[dict[str, float | str]]:
     workers = min(4, max(1, (os.cpu_count() or 2) // 2))
-    arguments = [(index, realtime_root, reference_root, config) for index in range(1, count + 1)]
+    arguments = [
+        (case_name, index, realtime_root, reference_root, config)
+        for case_name, index in selected_cases
+    ]
     if workers == 1:
         return [score_case(argument) for argument in arguments]
     context = multiprocessing.get_context("spawn")
@@ -846,6 +894,12 @@ def evaluate() -> dict[str, Any]:
     RUNTIME_ROOT.mkdir(parents=True)
     reference_root = resolve_references()
     validate_reference_bundle(reference_root, config, len(states))
+    reference_cases = discover_reference_cases(reference_root, len(states))
+    case_indices = [index for _, index in reference_cases]
+    selected_cases = [
+        (case_name, index, states[index - 1])
+        for case_name, index in reference_cases
+    ]
     candidate_source = RUNTIME_ROOT / "candidate-source"
     candidate_build = RUNTIME_ROOT / "candidate-build"
     candidate_realtime = RUNTIME_ROOT / "candidate-realtime"
@@ -854,7 +908,11 @@ def evaluate() -> dict[str, Any]:
         candidate_source, candidate_build, run_tests=True
     )
     capture_cases(
-        candidate_executable, candidate_source, candidate_realtime, states, contract
+        candidate_executable,
+        candidate_source,
+        candidate_realtime,
+        selected_cases,
+        contract,
     )
 
     baseline_repository = TEST_FILES / "baseline_workspace"
@@ -876,10 +934,14 @@ def evaluate() -> dict[str, Any]:
             baseline_source, baseline_build, run_tests=False
         )
         capture_cases(
-            baseline_executable, baseline_source, baseline_realtime, states, contract
+            baseline_executable,
+            baseline_source,
+            baseline_realtime,
+            selected_cases,
+            contract,
         )
         baseline_full = score_all_cases(
-            baseline_realtime, reference_root, config, len(states)
+            baseline_realtime, reference_root, config, reference_cases
         )
         baseline = [
             {
@@ -897,18 +959,20 @@ def evaluate() -> dict[str, Any]:
                 TEST_FILES / "baseline-score-report.json", "baseline score report"
             )
         )
-        baseline = validate_baseline(baseline_report, states, config)
+        baseline = validate_baseline(
+            baseline_report, states, config, case_indices
+        )
         baseline_mode = "precomputed"
 
     candidate = score_all_cases(
-        candidate_realtime, reference_root, config, len(states)
+        candidate_realtime, reference_root, config, reference_cases
     )
     comparison = compare_scores(baseline, candidate)
     resolved = determine_resolved(tests_passed, comparison)
     reason = (
         f"{comparison['decision']}; baseline={baseline_mode}; "
         f"public_tests={'passed' if tests_passed else 'failed'}; "
-        f"cases={len(states)}; strict={comparison['averageB']:.8f}; "
+        f"cases={len(reference_cases)}; strict={comparison['averageB']:.8f}; "
         f"mean_delta={comparison['meanDelta']:+.8f}; "
         f"flip_median={comparison['flipMedian']:+.8f} "
         f"({comparison['flipImproved']} improved/{comparison['flipWorse']} worse); "

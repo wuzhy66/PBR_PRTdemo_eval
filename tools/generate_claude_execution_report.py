@@ -113,6 +113,11 @@ def compact_tool_summary(name: str, tool_input: dict[str, Any]) -> str:
     return json.dumps(tool_input, ensure_ascii=False, separators=(",", ":"))[:240]
 
 
+def public_model_identifier(model: str) -> str:
+    """移除 provider/gateway 的内部 deployment suffix，只保留公开 model ID。"""
+    return re.sub(r"-jibao\b", "", str(model), flags=re.IGNORECASE)
+
+
 def parse_execution(records: list[dict[str, Any]]) -> dict[str, Any]:
     prompt = ""
     final_response = ""
@@ -150,7 +155,7 @@ def parse_execution(records: list[dict[str, Any]]) -> dict[str, Any]:
             continue
         model = message.get("model")
         if model:
-            models[str(model)] += 1
+            models[public_model_identifier(str(model))] += 1
         for block in message.get("content", []):
             if not isinstance(block, dict):
                 continue
@@ -203,7 +208,7 @@ def parse_subagents(transcript: Path) -> list[dict[str, Any]]:
             for record in load_jsonl(session_path):
                 message = record.get("message")
                 if record.get("type") == "assistant" and isinstance(message, dict) and message.get("model"):
-                    actual_models[str(message["model"])] += 1
+                    actual_models[public_model_identifier(str(message["model"]))] += 1
         subagents.append(
             {
                 "toolUseId": meta.get("toolUseId", ""),
@@ -214,6 +219,21 @@ def parse_subagents(transcript: Path) -> list[dict[str, Any]]:
             }
         )
     return subagents
+
+
+def apply_subagent_actual_model_overrides(
+    subagents: list[dict[str, Any]],
+    overrides: dict[str, Any],
+) -> None:
+    """按 requested model 或 tool-use ID 修正已知的 backend model 归属。"""
+    if not isinstance(overrides, dict):
+        raise ValueError("profile override subagentActualModelOverrides 必须是 object")
+    for subagent in subagents:
+        selector = str(subagent.get("toolUseId", ""))
+        requested_model = str(subagent.get("requestedModel", ""))
+        actual_model = overrides.get(selector, overrides.get(requested_model))
+        if actual_model is not None:
+            subagent["actualModel"] = public_model_identifier(str(actual_model))
 
 
 def git_information(
@@ -684,9 +704,11 @@ def main() -> int:
         if arguments.profile is not None
         else profile_from_report(arguments.existing_report)
     )
+    subagent_actual_model_overrides: dict[str, Any] = {}
     if arguments.profile_overrides is not None:
         overrides = json.loads(arguments.profile_overrides.read_text(encoding="utf-8"))
         change_assessments = overrides.pop("changeAssessments", {})
+        subagent_actual_model_overrides = overrides.pop("subagentActualModelOverrides", {})
         if not isinstance(change_assessments, dict):
             raise ValueError("profile override changeAssessments 必须是 object")
         for change in profile.get("changes", []):
@@ -695,6 +717,7 @@ def main() -> int:
         profile.update(overrides)
     execution = parse_execution(load_jsonl(transcript))
     subagents = parse_subagents(transcript)
+    apply_subagent_actual_model_overrides(subagents, subagent_actual_model_overrides)
     git = git_information(
         repository,
         arguments.working_tree_candidate,

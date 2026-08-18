@@ -1,9 +1,55 @@
 import unittest
 
-from tools.generate_claude_execution_report import render_markdown_report
+from tools.generate_claude_execution_report import (
+    apply_subagent_actual_model_overrides,
+    parse_execution,
+    public_model_identifier,
+    render_markdown_report,
+)
 
 
 class EvaluationMarkdownTests(unittest.TestCase):
+    def test_overrides_subagent_actual_model_by_requested_model_only(self):
+        subagents = [
+            {
+                "toolUseId": "sonnet-1",
+                "requestedModel": "sonnet",
+                "actualModel": "deepseek-v4-flash",
+            },
+            {
+                "toolUseId": "haiku-1",
+                "requestedModel": "haiku",
+                "actualModel": "deepseek-v4-flash",
+            },
+        ]
+
+        apply_subagent_actual_model_overrides(
+            subagents,
+            {"sonnet": "deepseek-v4-pro"},
+        )
+
+        self.assertEqual(subagents[0]["actualModel"], "deepseek-v4-pro")
+        self.assertEqual(subagents[1]["actualModel"], "deepseek-v4-flash")
+
+    def test_normalizes_internal_model_deployment_suffix(self):
+        self.assertEqual(
+            public_model_identifier("claude-opus-4-8-jibao"),
+            "claude-opus-4-8",
+        )
+        execution = parse_execution(
+            [
+                {
+                    "type": "assistant",
+                    "message": {
+                        "model": "claude-opus-4-8-jibao",
+                        "content": [{"type": "text", "text": "done"}],
+                    },
+                }
+            ]
+        )
+        self.assertEqual(execution["mainModel"], "claude-opus-4-8")
+        self.assertEqual(execution["modelCounts"], {"claude-opus-4-8": 1})
+
     def test_renders_score_gates_process_and_compact_tool_summary(self):
         payload = {
             "profile": {

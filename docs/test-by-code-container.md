@@ -118,8 +118,14 @@ sudo install -d -m 0775 -o "$(id -un)" -g "$(id -gn)" /eval
 和 Occlusion diagnostics 使用 200×150 linear data。`offline-indirect-linear.pfm`
 由原始 800×600 linear HDR AOV 做 deterministic 4×4 area-average，candidate capture
 在评分时执行完全相同的 downsample。`occlusion-mask-weights.f32` 以 case-major、
-little-endian float32 保存同样 area-average 后的 coverage weights。该布局保留全部
+little-endian float32 保存同样 area-average 后的 coverage weights。完整布局可保留
 200 cases，同时把 `/test_files` 控制在 500 files、500 MB 以内。
+
+Evaluator 也支持任意非空 case subset。实际集合由 `references/cases/` 中名称以
+`case` 开头、并以 numeric state ID 结尾的目录决定，例如 `case-0007`、`case0007`
+或 `case_custom_7` 都映射到 `cases.jsonl` 第 7 行。其他前缀的目录会被忽略；缺少
+numeric ID、ID 越界、ID 重复或缺少 PNG/PFM 会在 build 前失败。Capture、scoring、
+baseline lookup 和 consolidated mask offset 都保留原始 ID，不会把 subset 重新编号。
 
 受文件数限制，compact bundle 不包含 `baseline_workspace/`，而是提供
 `baseline-score-report.json`。该报告必须由与评测容器完全相同的 OS image、
@@ -185,7 +191,7 @@ test -w /eval
 /eval/.venv/bin/python -m json.tool /eval/code_result.json
 ```
 
-一次完整运行包含：candidate build 与 public CTest、200-case candidate capture、
+一次完整运行包含：candidate build 与 public CTest、所选 case subset 的 candidate capture、
 candidate 指标计算、与 precomputed baseline 的 regression gates。运行期间没有逐 case
 stdout 属于正常行为。
 

@@ -159,7 +159,70 @@ class TestByCodeTests(unittest.TestCase):
             },
         }
         with self.assertRaisesRegex(MODULE.EvaluationError, "diagnostic resolution"):
-            MODULE.validate_baseline(report, [], config)
+            MODULE.validate_baseline(report, [], config, [])
+
+    def test_reference_discovery_accepts_any_case_prefix_with_numeric_id(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            reference_root = Path(directory)
+            cases_root = reference_root / "cases"
+            cases_root.mkdir()
+            for name in ("case_7", "case-0002"):
+                case = cases_root / name
+                case.mkdir()
+                (case / "offline.png").touch()
+                (case / "offline-indirect-linear.pfm").touch()
+            (cases_root / "notes").mkdir()
+            self.assertEqual(
+                MODULE.discover_reference_cases(reference_root, 10),
+                [("case-0002", 2), ("case_7", 7)],
+            )
+
+    def test_reference_discovery_rejects_case_without_numeric_id(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cases_root = Path(directory) / "cases"
+            (cases_root / "case-blue").mkdir(parents=True)
+            with self.assertRaisesRegex(MODULE.EvaluationError, "numeric id"):
+                MODULE.discover_reference_cases(Path(directory), 10)
+
+    def test_reference_discovery_rejects_empty_selection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cases_root = Path(directory) / "cases"
+            (cases_root / "notes").mkdir(parents=True)
+            with self.assertRaisesRegex(MODULE.EvaluationError, "为空"):
+                MODULE.discover_reference_cases(Path(directory), 10)
+
+    def test_baseline_selects_only_requested_case_ids(self) -> None:
+        states = [{"value": 1}, {"value": 2}, {"value": 3}]
+        config = {
+            "diagnosticResolution": {
+                "width": 200,
+                "height": 150,
+                "downsample": "linear-area-average",
+            },
+            "weights": {"perceptualFlip": 0.7},
+            "regressionGates": {"required": True},
+        }
+        report_cases = []
+        for index, state in enumerate(states, 1):
+            report_cases.append(
+                {
+                    "id": f"case-{index:04d}",
+                    "definitionFingerprint": MODULE.canonical_hash(state),
+                    "mode": "strict",
+                    "scores": {"perceptualFlip": 0.5 + index * 0.01},
+                    "diagnosticScores": {"worstPatchFlip": 0.4},
+                    "totalScore": 0.6,
+                }
+            )
+        report = {
+            "schemaVersion": 1,
+            "diagnosticResolution": config["diagnosticResolution"],
+            "weights": config["weights"],
+            "regressionGates": config["regressionGates"],
+            "cases": report_cases,
+        }
+        selected = MODULE.validate_baseline(report, states, config, [1, 3])
+        self.assertEqual([case["id"] for case in selected], ["case-0001", "case-0003"])
 
 
 if __name__ == "__main__":

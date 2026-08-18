@@ -28,13 +28,13 @@ python ./tools/test_realtime_isolation.py
 
 ## 评测报告
 
-GitHub 上从 [Evaluation reports](eval_docs/README.md) 查看各模型结果；所有对外报告均位于 `eval_docs/eval_md/`，可直接渲染。
+GitHub 上从 [Evaluation reports](eval_docs/README.md) 查看各模型结果；所有对外报告均位于 `eval_docs/eval_rollout/`，可直接渲染。
 
 每次生成执行报告时传入 `--markdown-output`，保证 GitHub 报告来自同一份脱敏 evaluation payload：
 
 ```text
 python ./tools/generate_claude_execution_report.py ... \
-  --markdown-output ./eval_docs/eval_md/testxx-model-evaluation.md
+  --markdown-output ./eval_docs/eval_rollout/testxx-model-evaluation.md
 ```
 
 已有本地 evaluation archive 可批量刷新 Markdown 和索引：
@@ -276,7 +276,7 @@ python .\tools\render_test_set_references.py `
 
 每条 case 的可视 reference 是 `offline.png`，linear AOV 使用 `offline-*.pfm`，遮挡 mask 是 `offline-occlusion-mask.pgm`。Reference 生成阶段还会提前准备 `offline-indirect.png` 和 `offline-occlusion-leak.png`，分别作为 indirect transport 与 occlusion leak 的 Offline 对照图。`4096 SPP` 是每个最终 pixel 的总 sample 数，平均分配给 2×2 SSAA 的四个 subpixel，每个 subpixel 为 1024 samples。
 
-上述目录是可复用的 full-resolution source reference。受 500 files / 500 MB 限制的 `test_by_code.py` 输入使用单独的未压缩 compact bundle：保留全部 200 个 800×600 `offline.png`，把 linear diagnostic AOV 做 4×4 area-average，并合并 manifest 与 occlusion weights。转换命令和 baseline report 要求见 [`docs/test-by-code-container.md`](docs/test-by-code-container.md)。
+上述目录是可复用的 full-resolution source reference。受 500 files / 500 MB 限制的 `test_by_code.py` 输入使用单独的未压缩 compact bundle：完整 bundle 可保留 200 个 800×600 `offline.png`，把 linear diagnostic AOV 做 4×4 area-average，并合并 manifest 与 occlusion weights；也可以只保留任意非空 case subset。转换命令、case naming 和 baseline report 要求见 [`docs/test-by-code-container.md`](docs/test-by-code-container.md)。
 
 4096 SPP 的总耗时取决于 CPU、并行 case 数与每个 renderer 的 threads。当前 200-case 集合可从 v3 reference 复用原 72 条，只需新渲染 128 条；快速检查流程可以显式使用较低 SPP，但不能作为正式评分 reference。
 

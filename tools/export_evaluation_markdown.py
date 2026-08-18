@@ -18,6 +18,8 @@ def render_index(entries: list[tuple[Path, dict[str, Any]]]) -> str:
         "",
         "最终排名查看 `Normalized improvement`，不是单个 renderer 的 `Strict score`。",
         "",
+        "历史模型对比与评测升级建议见 [Realtime rendering 模型评测总结](model-evaluation-summary.md)。",
+        "",
         "| Test | Model | Decision | Normalized improvement | Strict score | Mean B−A | Cases | Report |",
         "|---|---|---|---:|---:|---:|---:|---|",
     ]
@@ -39,7 +41,7 @@ def render_index(entries: list[tuple[Path, dict[str, Any]]]) -> str:
             "",
             "## 目录约定",
             "",
-            "- `eval_md/`：GitHub 可直接渲染的报告，包含指标、过程分析、阶段与 tool-call 摘要。",
+            "- `eval_rollout/`：GitHub 可直接渲染的报告，包含指标、过程分析、阶段与 tool-call 摘要。",
             "- 报告不包含具体执行日期、时长或机器绝对路径。",
             "",
         ]
@@ -50,7 +52,7 @@ def render_index(entries: list[tuple[Path, dict[str, Any]]]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input-root", type=Path, default=Path("eval_docs/eval_html"))
-    parser.add_argument("--output-root", type=Path, default=Path("eval_docs/eval_md"))
+    parser.add_argument("--output-root", type=Path, default=Path("eval_docs/eval_rollout"))
     parser.add_argument("--index", type=Path, default=Path("eval_docs/README.md"))
     arguments = parser.parse_args()
 
@@ -64,7 +66,7 @@ def main() -> int:
             encoding="utf-8",
             newline="\n",
         )
-        entries.append((Path("eval_md") / markdown_path.name, payload))
+        entries.append((Path("eval_rollout") / markdown_path.name, payload))
         print(f"生成 Markdown：{markdown_path}")
 
     arguments.index.parent.mkdir(parents=True, exist_ok=True)
