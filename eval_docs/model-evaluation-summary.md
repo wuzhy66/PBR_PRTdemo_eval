@@ -18,8 +18,19 @@ Opus=`gpt-5.6-sol`，Sonnet=`deepseek-v4-pro`，Haiku=`deepseek-v4-flash`。
 
 ## 指标评估
 
-取 demo 场景中不同灯光和相机位置的 200 个快照 case，以 path tracing 离线渲染图为答案。先计算 FLIP 与 Indirect 的 0～1 similarity score，再按 `FLIP^0.7 × Indirect^0.3` 得到 Strict score。仅当全 case 平均 B−A 大于 0，且 FLIP、worst-patch FLIP 的 median regression gates 均通过时，才按 baseline 剩余提升空间归一化到 0～1，否则判定失败。开发阶段模型无法看到隐藏测试集；该评测检查静态快照，不检查光源运动时的 temporal stability。
+取 demo 场景中不同灯光和相机位置的 200 个快照 case，以 path tracing 离线渲染图为答案。先计算 [FLIP](https://research.nvidia.com/publication/flip) 与 [Indirect](https://doi.org/10.1145/3197517.3201388) 的 0～1 similarity score，再按 `FLIP^0.7 × Indirect^0.3` 得到 Strict score。
+
+设 baseline、rollout 的 case 平均 Strict score 分别为 $A$ 和 $B$，仅当全 case 平均 $B−A$ 大于 0，且 FLIP、worst-patch FLIP 的 median regression gates 均通过时，才按 baseline 剩余提升空间归一化到 0～1，否则判定失败，最终评测输出指标：
+
+```math
+\begin{aligned} G &= (B-A>0) \land (\mathrm{median}\,\Delta\mathrm{FLIP}>0) \land (\mathrm{median}\,\Delta\mathrm{WorstPatch}>0), \\ \mathrm{score} &= \begin{cases}\mathrm{clamp}_{[0,1]}\!\left(\dfrac{B-A}{1-A}\right),&G,\\0,&\neg G,\end{cases} \\ \mathrm{resolved} &= \mathrm{public\_tests\_passed} \land G \land (\mathrm{score}>0). \end{aligned}
+```
+
+`reason` 记录评测判定、测试状态，以及各项评分和诊断结果。
+
 各轮详细评测结果见 [eval_rollout](./eval_rollout/)。
+
+开发阶段模型无法看到隐藏测试集；该评测检查静态快照，不检查光源运动时的 temporal stability。
 
 ## 模型优劣
 
